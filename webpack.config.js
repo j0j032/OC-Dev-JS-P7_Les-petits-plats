@@ -28,7 +28,7 @@ const config = {
     assetModuleFilename: 'src/assets/[name][ext]'
   },
   devServer: {
-    port: 8089,
+    port: 8088,
     compress: false,
     static: {
       directory: path.join(__dirname, '/')
