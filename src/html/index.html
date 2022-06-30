@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+    <title>Les petits plats</title>
+  </head>
+  <body>
+    <header>
+      <img src="src/assets/images/logo.png">
+      <h1>Les petits plats</h1>
+    </header>
+    <main class="container">
+      <nav class="navbar container">
+        <form class="d-flex form-search-bar">
+          <input class="form-control input-search-bar" type="search" placeholder="Rechercher une recette" aria-label="Rechercher une recette">
+            <button type="submit"><i class="bi-search icon-search"></i></button>            
+        </form>
+      </nav>
+      <section class="container" id="section-filtres">
+        <div class="d-flex badges">
+          <button type="button" class="btn btn-primary">
+            Coco <i class="bi-x-circle"></i>
+          </button>
+        </div>
+        <div class="row align-items-start">
+          <div class="accordion col" id="ingredients">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading-ingredients">
+                <button class="accordion-button accordion-button-ingredients" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-ingredients" aria-expanded="false" aria-controls="collapse-ingredients">
+                  Ingredients
+                </button>
+              </h2>
+              <div id="collapse-ingredients" class="accordion-collapse collapse" aria-labelledby="heading-ingredients" data-bs-parent="#ingredients">
+                <div class="accordion-body">
+                  <ul class="list-group">
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion col" id="appareils">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingTwo">
+                <button class="accordion-button accordion-button-appareils" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne">
+                  Appareils
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#appareils">
+                <div class="accordion-body">
+                  <ul class="list-group">
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="accordion col" id="ustensibles">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="heading-ustensibles">
+                <button class="accordion-button accordion-button-ustensibles" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-ustensibles" aria-expanded="false" aria-controls="collapseOne">
+                  Ustensibles
+                </button>
+              </h2>
+              <div id="collapse-ustensibles" class="accordion-collapse collapse" aria-labelledby="heading-ustensibles" data-bs-parent="#ustensibles">
+                <div class="accordion-body">
+                  <ul class="list-group">
+                    <li class="list-group-item">An item</li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                    <li class="list-group-item">A fourth item</li>
+                    <li class="list-group-item">And a fifth one</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="container" id="section-recettes">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <div class="col">
+            <div class="card">
+              <div class="background-grey"></div>
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="background-grey"></div>
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="background-grey"></div>
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card">
+              <div class="background-grey"></div>
+              <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </body>
+</html>
