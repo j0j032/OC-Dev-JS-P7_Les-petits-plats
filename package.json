@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thra/dev-js-p7.git"
+    "url": "git+https://github.com/j0j032/dev-js-p7.git"
   },
   "keywords": [
     "DJP7"
   ],
-  "author": "Thierry Raimond",
+  "author": "j0j032",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thra/dev-js-p7/issues"
+    "url": "https://github.com/j0j032/dev-js-p7/issues"
   },
-  "homepage": "https://github.com/thra/dev-js-p7#readme",
+  "homepage": "https://github.com/j0j032/dev-js-p7#readme",
   "devDependencies": {
     "@babel/core": "^7.17.12",
     "babel-eslint": "^10.1.0",
