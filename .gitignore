@@ -1,6 +1,8 @@
 # node Modules
 node_modules
 
+.DS_Store
+
 # images
 src/assets/images
 

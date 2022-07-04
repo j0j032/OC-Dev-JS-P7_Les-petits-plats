@@ -1,0 +1,125 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    :focus {
+        outline: none;
+    }
+}
+
+header{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    width: 100%;
+    padding: 30px;
+    >img{
+        width: 268px;
+    }
+}
+main{
+    padding: 0 4%;
+}
+
+.navbar{
+    &__container{
+        >form{
+            width: 100%;
+            height: 100%;
+        }
+        height: 69px;
+        width: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: flex-start;
+        justify-content: flex-start;
+        border-radius: 5px;
+        background-color: $lightGrey;
+    }
+    &__searchbar{
+        width: 94%;
+        height: 100%;
+        padding: 24px;
+        background-color: transparent;
+        border: none;
+    }
+    &__btn{
+        width: 5%;
+        height: 100%;
+        background-color: transparent;
+        border: none;
+        transform: translateY(-2px);
+    }
+}
+.tags{
+    display: flex;
+    justify-content:flex-start;
+    height: fit-content;
+    padding: 20px 0;
+}
+
+.tag{
+    width: fit-content;
+    height: 40px;
+    min-width: 100px;
+    border-radius: 5px;
+    background: $blue;
+}
+
+.filters-container{
+    width: fit-content;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.filter{
+    width: fit-content;
+    border-radius: 5px;
+    min-width: 170px;
+    height: fit-content;
+
+    // simuler if expand (s'agrandit en fonction du contenu)
+    /* width: 300px;
+    height: 200px; */
+
+    &__btn{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        color: $white;
+        border-radius: 5px;
+        height: 69px;
+        width: 100%;
+        border: transparent;
+        background: transparent;
+        // class quand expand à rajouter au click en JS
+        &--expand{
+            color: rgba(255, 255, 255, 0.438);
+        }
+        &>span{
+            color: $white;
+        }
+    }
+}
+
+.ingredients{
+    background-color: $blue;
+    color: $white;
+}
+.appareils{
+    background-color: $green;
+    color: $white;
+}
+.ustensiles{
+    background-color: $orange;
+    color: $white;
+}
+
+.cards-container{
+    margin-top: 40px;
+    width: 100%;
+    height: 400px;
+    background-color: rgb(236, 233, 228);
+}
