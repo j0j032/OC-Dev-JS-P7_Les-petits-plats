@@ -23,7 +23,7 @@
         border-radius:0 0 5px 5px;
         background-color: $lightGrey;
         width: 380px;
-        height: 310px;
+        height: 178px;
         padding: 15px;
     }
     &__headContainer{
@@ -57,6 +57,11 @@
             font-size: 0.7em;
             width: 50%;
             height: 100px;
+            display: -webkit-box;
+            -webkit-line-clamp: 6;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         &--list{
             width: 50%;
@@ -69,6 +74,20 @@
     }
     &__ingdts{
        display: flex;
-       flex-direction: row;
+       white-space: nowrap;
+       margin-right: 10px;
+       height: fit-content;
+
+       &--span{
+           width: fit-content;
+           white-space: nowrap;
+           font-weight: 400;
+        }
+        &--p{
+            margin-bottom: -3px;
+           font-weight: 600;
+            overflow: hidden;
+            text-overflow: ellipsis;
+       }
     }
 }

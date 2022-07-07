@@ -3,7 +3,7 @@ const dom = require('../components/dom')
 module.exports = {
 
   createRecipeCard (data) {
-    const { id, name, appliance, description, ingredients, servings, time, ustensils } = data
+    const { name, description, ingredients, time } = data
     const clock = '/src/assets/images/clock.svg'
     const timeDisplay = `${time} min`
 
@@ -19,6 +19,8 @@ module.exports = {
     const ingdtListAttributes = [{ class: 'recipe-card__subHeadContainer--list' }]
     const ingdtsAttributes = [{ class: 'recipe-card__ingdts' }]
     const descsAttributes = [{ class: 'recipe-card__desc' }]
+    const spanLiAttributes = [{ class: 'recipe-card__ingdts--span' }]
+    const pLiAttributes = [{ class: 'recipe-card__ingdts--p' }]
 
     const getRecipeCardDOM = () => {
       const card = dom.createElement('div', cardAttributes, null, null)
@@ -41,17 +43,18 @@ module.exports = {
           }
           if (ingredients[i].quantity == null) {
             ingredients[i].quantity = ''
-            ingrdtDOM = ingredients[i].ingredient
           } else {
-            ingrdtDOM = `${ingredients[i].ingredient}: ${ingredients[i].quantity} ${ingredients[i].unit}`
+            ingrdtDOM = `: ${ingredients[i].quantity} ${ingredients[i].unit}`
           }
-          dom.createElement('li', ingdtsAttributes, ingredientList, ingrdtDOM)
+          const ingrendientLi = dom.createElement('li', ingdtsAttributes, ingredientList, null)
+          const ingdP = dom.createElement('p', pLiAttributes, ingrendientLi, ingredients[i].ingredient)
+          dom.createElement('span', spanLiAttributes, ingdP, ingrdtDOM)
         }
       }
       getIngredientCardList()
       return card
     }
 
-    return { name, time, getRecipeCardDOM }
+    return { getRecipeCardDOM }
   }
 }

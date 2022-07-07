@@ -24,13 +24,14 @@ const init = async () => {
   const recipes = await api.getRecipes()
   console.log(recipes)
 
-  displayRecipe(recipes)
+  return displayRecipe(recipes)
 }
 
 domLinker.searchBar.addEventListener('input', e => {
   if (e.target.selectionEnd >= 3) {
     if (e.target.value.indexOf(recipesTDI)) {
       console.log('azerty')
+      // displayRecipe(recipes)
     } else {
       console.log('pas trouvé')
     }
