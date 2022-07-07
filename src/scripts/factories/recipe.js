@@ -33,11 +33,22 @@ module.exports = {
       const ingredientList = dom.createElement('ul', ingdtListAttributes, subHeadingContainer, null)
       dom.createElement('p', descsAttributes, subHeadingContainer, description)
 
-      for (let i = 0; i < ingredients.length; i++) {
-        const ingrdtDOM = `${ingredients[i].ingredient}: ${ingredients[i].quantity} ${ingredients[i].unit}`
-        dom.createElement('li', ingdtsAttributes, ingredientList, ingrdtDOM)
+      const getIngredientCardList = () => {
+        for (let i = 0; i < ingredients.length; i++) {
+          let ingrdtDOM
+          if (ingredients[i].unit == null) {
+            ingredients[i].unit = ''
+          }
+          if (ingredients[i].quantity == null) {
+            ingredients[i].quantity = ''
+            ingrdtDOM = ingredients[i].ingredient
+          } else {
+            ingrdtDOM = `${ingredients[i].ingredient}: ${ingredients[i].quantity} ${ingredients[i].unit}`
+          }
+          dom.createElement('li', ingdtsAttributes, ingredientList, ingrdtDOM)
+        }
       }
-
+      getIngredientCardList()
       return card
     }
 
