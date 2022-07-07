@@ -6,7 +6,7 @@ module.exports = {
     const { id, name, appliance, description, ingredients, servings, time, ustensils } = data
     const clock = '/src/assets/images/clock.svg'
     const timeDisplay = `${time} min`
-    
+
     const cardAttributes = [{ class: 'recipe-card' }]
     const imgAttributes = [{ class: 'recipe-card__imgContainer' }]
     const infosAttributes = [{ class: 'recipe-card__infosContainer' }]
@@ -16,6 +16,7 @@ module.exports = {
     const subHeadAttributes = [{ class: 'recipe-card__subHeadContainer' }]
     const nameAttributes = [{ class: 'recipe-card__name' }]
     const timeAttributes = [{ class: 'recipe-card__time' }]
+    const ingdtListAttributes = [{ class: 'recipe-card__subHeadContainer--list' }]
     const ingdtsAttributes = [{ class: 'recipe-card__ingdts' }]
     const descsAttributes = [{ class: 'recipe-card__desc' }]
 
@@ -29,8 +30,13 @@ module.exports = {
       dom.createElement('img', clockAttributes, timeContainer, null)
       dom.createElement('p', timeAttributes, timeContainer, timeDisplay)
       const subHeadingContainer = dom.createElement('div', subHeadAttributes, infosContainer, null)
-      // const ingredientList = dom.createElement('ul', null, subHeadingContainer, null)
+      const ingredientList = dom.createElement('ul', ingdtListAttributes, subHeadingContainer, null)
       dom.createElement('p', descsAttributes, subHeadingContainer, description)
+
+      for (let i = 0; i < ingredients.length; i++) {
+        const ingrdtDOM = `${ingredients[i].ingredient}: ${ingredients[i].quantity} ${ingredients[i].unit}`
+        dom.createElement('li', ingdtsAttributes, ingredientList, ingrdtDOM)
+      }
 
       return card
     }

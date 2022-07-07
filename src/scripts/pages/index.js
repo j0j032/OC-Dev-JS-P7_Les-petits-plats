@@ -23,6 +23,7 @@ const displayRecipe = (data) => {
 const init = async () => {
   const recipes = await api.getRecipes()
   console.log(recipes)
+
   displayRecipe(recipes)
 }
 

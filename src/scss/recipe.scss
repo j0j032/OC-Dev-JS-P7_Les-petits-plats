@@ -23,7 +23,7 @@
         border-radius:0 0 5px 5px;
         background-color: $lightGrey;
         width: 380px;
-        height: 178px;
+        height: 310px;
         padding: 15px;
     }
     &__headContainer{
@@ -52,15 +52,23 @@
         display: flex;
         justify-content: baseline;
         gap: 15px;
+        
         >p{
             font-size: 0.7em;
             width: 50%;
             height: 100px;
-            display: -webkit-box;
-            -webkit-line-clamp:6;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
+        &--list{
+            width: 50%;
+            margin: 0;
+            padding: 0;
+            >li{
+                font-size: 0.7em;
+            }
+        }
+    }
+    &__ingdts{
+       display: flex;
+       flex-direction: row;
     }
 }
