@@ -104,6 +104,8 @@ main{
     }
 }
 
+// il va falloir créer le container qui apparait au clic et qui contient la liste dont la longueur devra être égale à la longueur du bouton cliqué.
+
 .ingredients{
     background-color: $blue;
     color: $white;
@@ -115,11 +117,4 @@ main{
 .ustensiles{
     background-color: $orange;
     color: $white;
-}
-
-.cards-container{
-    margin-top: 40px;
-    width: 100%;
-    height: 400px;
-    background-color: rgb(236, 233, 228);
 }
