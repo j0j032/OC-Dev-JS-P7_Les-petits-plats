@@ -3,8 +3,6 @@ const dom = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const { createRecipeCard } = require('../factories/recipe')
 
-let recipes
-
 const displayRecipe = (data) => {
   data.forEach(recipe => {
     const recipeModel = createRecipeCard(recipe)
@@ -12,23 +10,29 @@ const displayRecipe = (data) => {
     domLinker.resultsContainer.appendChild(recipeCardDOM)
   })
 }
-let result = []
-const init = async (search) => {
-  recipes = await api.getRecipes()
+
+const allRecipes = async () => {
+  const recipes = await api.getRecipes()
   console.log(recipes)
-  for (const item of recipes) {
-    if (item.name.toLowerCase().includes(search)) {
-      result.push(item)
-    }
-  }
-  displayRecipe(result)
+  displayRecipe(recipes)
+}
+
+allRecipes()
+
+const mainSearchBar = async (search) => {
+  let recipes = await api.getRecipes()
+  console.log(recipes)
+  recipes = recipes.filter(recipe => recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search))
+  displayRecipe(recipes)
+  console.log(recipes)
 }
 
 domLinker.searchBar.addEventListener('input', e => {
   if (e.target.value.length >= 3) {
-    result = []
     dom.emptyDOM(domLinker.resultsContainer)
-    init(e.target.value)
-    console.log(result)
+    mainSearchBar(e.target.value)
+  } else {
+    dom.emptyDOM(domLinker.resultsContainer)
+    allRecipes()
   }
 })
