@@ -3,6 +3,12 @@ const dom = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const { createRecipeCard } = require('../factories/recipe')
 
+const logRecipes = async () => {
+  const recipes = await api.getRecipes()
+  console.log(recipes)
+}
+logRecipes()
+
 const displayRecipe = (data) => {
   data.forEach(recipe => {
     const recipeModel = createRecipeCard(recipe)
@@ -11,19 +17,19 @@ const displayRecipe = (data) => {
   })
 }
 
-const allRecipes = async () => {
+const displayAllRecipes = async () => {
   const recipes = await api.getRecipes()
-  console.log(recipes)
   displayRecipe(recipes)
 }
-
-allRecipes()
+displayAllRecipes()
 
 const mainSearchBar = async (search) => {
   let recipes = await api.getRecipes()
-  console.log(recipes)
   recipes = recipes.filter(recipe => recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search))
   displayRecipe(recipes)
+  if (recipes.length <= 0) {
+    domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche '
+  }
   console.log(recipes)
 }
 
@@ -33,6 +39,6 @@ domLinker.searchBar.addEventListener('input', e => {
     mainSearchBar(e.target.value)
   } else {
     dom.emptyDOM(domLinker.resultsContainer)
-    allRecipes()
+    displayAllRecipes()
   }
 })
