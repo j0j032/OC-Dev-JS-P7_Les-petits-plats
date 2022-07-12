@@ -17,6 +17,12 @@ const createElement = (tag, attributes = [], parent, text) => {
   return element
 }
 
+const emptyDOM = el => {
+  while (el.firstChild) {
+    el.removeChild(el.firstChild)
+  }
+}
+
 module.exports = {
-  createElement
+  createElement, emptyDOM
 }
