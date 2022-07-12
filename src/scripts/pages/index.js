@@ -1,13 +1,21 @@
 const api = require('../components/api')
 const dom = require('../components/dom')
 const domLinker = require('../components/domLinker')
+const filters = require('../factories/filters')
 const { createRecipeCard } = require('../factories/recipe')
+
+const allIngredients = []
 
 const logRecipes = async () => {
   const recipes = await api.getRecipes()
   console.log(recipes)
 }
 logRecipes()
+
+const displayIngredients = async () => {
+  const recipes = await api.getRecipes()
+  displayIngredientList(recipes)
+}
 
 const displayRecipe = (data) => {
   data.forEach(recipe => {
@@ -16,6 +24,18 @@ const displayRecipe = (data) => {
     domLinker.resultsContainer.appendChild(recipeCardDOM)
   })
 }
+
+const displayIngredientList = (data) => {
+  data.forEach(recipe => {
+    filters.getIngredientList(recipe, allIngredients)
+  })
+  const allIngredientsG = [...new Set(allIngredients)]
+  console.log(allIngredientsG)
+  filters.createFilterListDOM(allIngredientsG, domLinker.ingredientsFilterContainer)
+}
+
+document.getElementById('ingredientBtn').addEventListener('click', () => displayIngredients())
+document.querySelector('.filter__btn > span').addEventListener('click', ()=> console.log('hide'))
 
 const displayAllRecipes = async () => {
   const recipes = await api.getRecipes()
