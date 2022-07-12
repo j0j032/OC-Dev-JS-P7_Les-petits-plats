@@ -28,7 +28,7 @@ const mainSearchBar = async (search) => {
   recipes = recipes.filter(recipe => recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search))
   displayRecipe(recipes)
   if (recipes.length <= 0) {
-    domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche '
+    domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
   }
   console.log(recipes)
 }
