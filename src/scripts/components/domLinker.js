@@ -5,5 +5,6 @@ module.exports = {
   ingredients: document.querySelector('.ingredients'),
   filterList: document.querySelector('.filter__list'),
   ingredientBtn: document.getElementById('ingredientBtn'),
-  arrowIcon: document.querySelectorAll('.filter__btn > span')
+  arrowIcon: document.querySelectorAll('.filter__btn > span'),
+  ingredientsSearchBar: document.querySelector('.ingredients__searchBar')
 }

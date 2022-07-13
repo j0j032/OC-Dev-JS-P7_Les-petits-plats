@@ -20,5 +20,4 @@ module.exports = {
       createElement('li', listAttributes, list, el)
     })
   }
-
 }

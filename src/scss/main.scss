@@ -105,6 +105,7 @@ main{
         width: 100%;
         border: transparent;
         background: transparent;
+        cursor: pointer;
         // class quand expand à rajouter au click en JS
         &--expand{
             color: rgba(255, 255, 255, 0.438);
@@ -132,6 +133,18 @@ main{
 .ingredients{
     background-color: $blue;
     color: $white;
+    &__searchBar{
+        background-color: transparent;
+        border: none;
+        &::placeholder{
+            color: $white;
+        }
+        &.show{
+            &::placeholder{
+                color:rgba(250, 235, 215, 0.424)            
+            }
+        }
+    }
 }
 .appareils{
     background-color: $green;
