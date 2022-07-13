@@ -12,6 +12,7 @@ const logRecipes = async () => {
 }
 logRecipes()
 
+// Ingredient Methods
 const displayIngredientList = (data) => {
   data.forEach(recipe => {
     filters.getIngredientList(recipe, allIngredients)
@@ -25,30 +26,39 @@ const displayIngredients = async () => {
   displayIngredientList(recipes)
 }
 
-const displayList = (list, container, placeHolder) => {
+// Button filters methods
+const displayList = (btn, list, container, placeHolder) => {
+  btn.style.transform = 'rotate(180deg)'
   list.classList.add('show')
   list.classList.remove('hidden')
   container.classList.add('absolute')
   placeHolder.classList.add('show')
+  placeHolder.removeAttribute('disabled')
+  placeHolder.setAttribute('placeholder', 'Rechercher un ingrédient')
   placeHolder.focus()
   displayIngredients()
 }
-const hideList = (list, container, placeHolder) => {
+const hideList = (btn, list, container, placeHolder) => {
+  btn.style.transform = 'rotate(0deg)'
   list.classList.remove('show')
   list.classList.add('hidden')
   container.classList.remove('absolute')
   placeHolder.classList.remove('show')
+  placeHolder.setAttribute('disabled', '')
+  placeHolder.setAttribute('placeholder', 'Ingrédients')
+  placeHolder.value = ''
   dom.emptyDOM(list)
 }
 
-const toggleList = (list, container, placeHolder) => {
+const toggleList = (btn, list, container, placeHolder) => {
   if (list.classList.contains('hidden')) {
-    displayList(list, container, placeHolder)
+    displayList(btn, list, container, placeHolder)
   } else {
-    hideList(list, container, placeHolder)
+    hideList(btn, list, container, placeHolder)
   }
 }
 
+// Display recipes
 const displayRecipe = (data) => {
   data.forEach(recipe => {
     const recipeModel = createRecipeCard(recipe)
@@ -74,7 +84,6 @@ const mainSearchBar = async (search) => {
 }
 
 // events
-
 domLinker.searchBar.addEventListener('input', e => {
   if (e.target.value.length >= 3) {
     dom.emptyDOM(domLinker.resultsContainer)
@@ -85,4 +94,4 @@ domLinker.searchBar.addEventListener('input', e => {
   }
 })
 
-domLinker.ingredientBtn.addEventListener('click', () => toggleList(domLinker.filterList, domLinker.ingredients, domLinker.ingredientsSearchBar))
+domLinker.ingredientsIconBtn.addEventListener('click', () => toggleList(domLinker.ingredientsIconBtn, domLinker.filterList, domLinker.ingredients, domLinker.ingredientsSearchBar))

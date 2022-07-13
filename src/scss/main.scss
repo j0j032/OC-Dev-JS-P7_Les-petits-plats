@@ -117,6 +117,7 @@ main{
 }
 .show{
     display: block;
+    width: fit-content;
 }
 .hidden{
     display: none;
@@ -134,12 +135,14 @@ main{
     background-color: $blue;
     color: $white;
     &__searchBar{
+        width: 60%;
         background-color: transparent;
         border: none;
         &::placeholder{
             color: $white;
         }
         &.show{
+            margin-left: 15px;
             &::placeholder{
                 color:rgba(250, 235, 215, 0.424)            
             }
@@ -153,4 +156,11 @@ main{
 .ustensiles{
     background-color: $orange;
     color: $white;
+}
+
+#ingredients__iconBtn{
+    transition: transform .0.3s ease-in;
+    &:hover{
+        color: $grey;
+    }
 }

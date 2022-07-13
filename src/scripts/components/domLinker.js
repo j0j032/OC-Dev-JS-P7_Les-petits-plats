@@ -4,7 +4,8 @@ module.exports = {
   filtersContainer: document.querySelector('.filters-container'),
   ingredients: document.querySelector('.ingredients'),
   filterList: document.querySelector('.filter__list'),
-  ingredientBtn: document.getElementById('ingredientBtn'),
+  ingredientsIconBtn: document.getElementById('ingredients__iconBtn'),
+  ingredientMainBtn: document.querySelector('.filter__btn'),
   arrowIcon: document.querySelectorAll('.filter__btn > span'),
   ingredientsSearchBar: document.querySelector('.ingredients__searchBar')
 }
