@@ -71,6 +71,7 @@ main{
     display: flex;
     justify-content: space-between;
     gap: 20px;
+    position: relative;
 }
 
 .filter{
@@ -78,10 +79,20 @@ main{
     border-radius: 5px;
     min-width: 170px;
     height: fit-content;
-
-    // simuler if expand (s'agrandit en fonction du contenu)
-    /* width: 300px;
-    height: 200px; */
+    &__list{
+     font-size: 0.7rem;
+     column-count: 7;
+     column-gap: 1.5rem;
+     >ul.list{
+         list-style: none;
+        >li{
+            cursor: pointer;
+            &:hover{
+                color: $grey;
+            }
+        }
+     }
+    }
 
     &__btn{
         display: flex;
@@ -102,6 +113,18 @@ main{
             color: $white;
         }
     }
+}
+.show{
+    display: block;
+}
+.hidden{
+    display: none;
+}
+.absolute{
+    position: absolute;
+    z-index: 3;
+    padding-right: 2.2rem;
+    padding-bottom: 2.2rem;
 }
 
 // il va falloir créer le container qui apparait au clic et qui contient la liste dont la longueur devra être égale à la longueur du bouton cliqué.

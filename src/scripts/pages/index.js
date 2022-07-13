@@ -31,11 +31,31 @@ const displayIngredientList = (data) => {
   })
   const allIngredientsG = [...new Set(allIngredients)]
   console.log(allIngredientsG)
-  filters.createFilterListDOM(allIngredientsG, domLinker.ingredientsFilterContainer)
+  filters.createFilterListDOM(allIngredientsG, domLinker.filterList)
 }
 
-document.getElementById('ingredientBtn').addEventListener('click', () => displayIngredients())
-document.querySelector('.filter__btn > span').addEventListener('click', ()=> console.log('hide'))
+const displayList = (list, container) => {
+  list.classList.add('show')
+  list.classList.remove('hidden')
+  container.classList.add('absolute')
+  displayIngredients()
+}
+const hideList = (list, container) => {
+  list.classList.remove('show')
+  list.classList.add('hidden')
+  container.classList.remove('absolute')
+  dom.emptyDOM(list)
+}
+
+const toggleList = (list, container) => {
+  if (list.classList.contains('hidden')) {
+    displayList(list, container)
+  } else {
+    hideList(list, container)
+  }
+}
+
+domLinker.ingredientBtn.addEventListener('click', () => toggleList(domLinker.filterList, domLinker.ingredients))
 
 const displayAllRecipes = async () => {
   const recipes = await api.getRecipes()
