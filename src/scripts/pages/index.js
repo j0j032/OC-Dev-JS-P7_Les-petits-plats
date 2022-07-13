@@ -4,7 +4,7 @@ const domLinker = require('../components/domLinker')
 const filters = require('../factories/filters')
 const { createRecipeCard } = require('../factories/recipe')
 
-const allIngredients = []
+let allIngredients = []
 
 const logRecipes = async () => {
   const recipes = await api.getRecipes()
@@ -17,13 +17,30 @@ const displayIngredientList = (data) => {
   data.forEach(recipe => {
     filters.getIngredientList(recipe, allIngredients)
   })
-  const allIngredientsG = [...new Set(allIngredients)]
-  console.log(allIngredientsG)
-  filters.createFilterListDOM(allIngredientsG, domLinker.filterList)
+  allIngredients = [...new Set(allIngredients)]
+  filters.createFilterListDOM(allIngredients, domLinker.ingredientsList)
 }
 const displayIngredients = async () => {
   const recipes = await api.getRecipes()
   displayIngredientList(recipes)
+}
+
+const displayNewIngredientsList = () => {
+  filters.createFilterListDOM(allIngredients, domLinker.ingredientsList)
+}
+const ingredientsSearch = (inputValue) => {
+  if (inputValue.length >= 3) {
+    allIngredients = allIngredients.filter(ingredient => ingredient.toLowerCase().includes(inputValue))
+    console.log(allIngredients)
+    dom.emptyDOM(domLinker.ingredientsList)
+    displayNewIngredientsList()
+    domLinker.ingredientsList.classList.add('onSearch')
+  } else if (inputValue.length < 3) {
+    dom.emptyDOM(domLinker.ingredientsList)
+    domLinker.ingredientsList.classList.remove('onSearch')
+    allIngredients = []
+    displayIngredients()
+  }
 }
 
 // Button filters methods
@@ -42,6 +59,7 @@ const hideList = (btn, list, container, placeHolder) => {
   btn.style.transform = 'rotate(0deg)'
   list.classList.remove('show')
   list.classList.add('hidden')
+  list.classList.remove('onSearch')
   container.classList.remove('absolute')
   placeHolder.classList.remove('show')
   placeHolder.setAttribute('disabled', '')
@@ -94,4 +112,5 @@ domLinker.searchBar.addEventListener('input', e => {
   }
 })
 
-domLinker.ingredientsIconBtn.addEventListener('click', () => toggleList(domLinker.ingredientsIconBtn, domLinker.filterList, domLinker.ingredients, domLinker.ingredientsSearchBar))
+domLinker.ingredientsIconBtn.addEventListener('click', () => toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar))
+domLinker.ingredientsSearchBar.addEventListener('input', (e) => ingredientsSearch(e.target.value))

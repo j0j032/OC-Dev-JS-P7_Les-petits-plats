@@ -22,34 +22,48 @@
         <button class="navbar__btn" type="submit"><img src="src/assets/images/glass.svg"></button>
       </form>
     </nav>
+
     <section class="filters">
+
       <div class="tags">
         <div class="tag"></div>
       </div>
 
       <div class="filters-container">
+
         <div class="filter ingredients">
-          <div class="filter__btn">
+          <div class="filter__btn filter__btn--ingredient">
             <input class="ingredients__searchBar" type="text" placeholder="Ingrédients" disabled>
             </input>
             <span id="ingredients__iconBtn"><i class="bi bi-chevron-down chevron-down"></i>
             </span>
           </div>
-          <div class="filter__list hidden"></div>
+          <div class="ingredients__list hidden"></div>
         </div>
+
         <div class="filter appareils">
-          <button id="appareilBtn" class="filter__btn">Appareils
-            <span>Y</span>
-          </button>
+          <div class="filter__btn filter__btn--appareil">
+            <input class="appareils__searchBar" type="text" placeholder="Appareils" disabled>
+            </input>
+            <span id="appareils__iconBtn"><i class="bi bi-chevron-down chevron-down"></i>
+            </span>
+          </div>
+          <div class="filter__list hidden"></div>
         </div>
 
         <div class="filter ustensiles">
-          <button id="ustensileBtn" class="filter__btn">Ustensiles
-            <span>Y</span>
-          </button>
+          <div class="filter__btn filter__btn--ustensile">
+            <input class="ustensiles__searchBar" type="text" placeholder="Ustensiles" disabled>
+            </input>
+            <span id="ustensiles__iconBtn"><i class="bi bi-chevron-down chevron-down"></i>
+            </span>
+          </div>
+          <div class="filter__list hidden"></div>
         </div>
+
       </div>
     </section>
+
     <section id="results">
       <div class="cards-container">
 
