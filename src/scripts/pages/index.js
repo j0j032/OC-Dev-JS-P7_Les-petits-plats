@@ -6,7 +6,7 @@ const filters = require('../factories/filters')
 const { createRecipeCard } = require('../factories/recipe')
 
 let allIngredients = []
-let allAppliance = []
+let allAppareils = []
 let allUstensils = []
 
 const logRecipes = async () => {
@@ -15,7 +15,7 @@ const logRecipes = async () => {
 }
 logRecipes()
 
-// Ingredient Methods
+// GetLists
 const displayIngredientList = (data) => {
   data.forEach(recipe => {
     filters.getIngredientList(recipe, allIngredients)
@@ -23,58 +23,53 @@ const displayIngredientList = (data) => {
   allIngredients = [...new Set(allIngredients)]
   filters.createFilterListDOM(allIngredients, domLinker.ingredientsList)
 }
-
-const displayIngredients = async () => {
-  const recipes = await api.getRecipes()
-  displayIngredientList(recipes)
-}
-
-const displayApplianceList = (data) => {
-  filters.getAppareilsList(data, allAppliance)
-  allAppliance = [...new Set(allAppliance)]
-  console.log(allAppliance)
-}
-
-const displayAppliances = async () => {
-  const recipes = await api.getRecipes()
-  displayApplianceList(recipes)
-}
-displayAppliances()
-
 const displayUstensilsList = (data) => {
   data.forEach(recipe => {
     filters.getUstensilesList(recipe, allUstensils)
   })
   allUstensils = [...new Set(allUstensils)]
-  console.log(allUstensils)
+  filters.createFilterListDOM(allUstensils, domLinker.ustensilesList)
 }
 
-const displayUstensils = async () => {
+const displayAppareilsList = (data) => {
+  filters.getAppareilsList(data, allAppareils)
+  allAppareils = [...new Set(allAppareils)]
+  filters.createFilterListDOM(allAppareils, domLinker.appareilsList)
+}
+
+const displayAllFiltersList = async () => {
   const recipes = await api.getRecipes()
+  displayIngredientList(recipes)
+  displayAppareilsList(recipes)
   displayUstensilsList(recipes)
 }
-displayUstensils()
-
+displayAllFiltersList()
 
 const displayNewList = (array, dom) => {
   filters.createFilterListDOM(array, dom)
 }
-const ingredientsSearch = (inputValue) => {
+
+// List search
+const filterSearch = (inputValue, array, container) => {
   if (inputValue.length >= 3) {
-    allIngredients = allIngredients.filter(ingredient => ingredient.toLowerCase().includes(inputValue))
-    dom.emptyDOM(domLinker.ingredientsList)
-    displayNewList(allIngredients, domLinker.ingredientsList)
-    domLinker.ingredientsList.classList.add('onSearch')
+    array = array.filter(item => item.toLowerCase().includes(inputValue))
+    dom.emptyDOM(container)
+    displayNewList(array, container)
+    container.classList.add('onSearch')
   } else if (inputValue.length < 3) {
-    dom.emptyDOM(domLinker.ingredientsList)
-    domLinker.ingredientsList.classList.remove('onSearch')
-    allIngredients = []
-    displayIngredients()
+    dom.emptyDOM(container)
+    container.classList.remove('onSearch')
+    array = []
+    displayAllFiltersList()
   }
 }
 
+domLinker.ingredientsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, allIngredients, domLinker.ingredientsList))
+domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, allAppareils, domLinker.appareilsList))
+domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, allUstensils, domLinker.ustensilesList))
+
 // Button filters methods
-const displayList = (btn, list, container, placeHolder, displayFunc, textSearch) => {
+const displayList = (btn, list, container, placeHolder, textSearch) => {
   btn.style.transform = 'rotate(180deg)'
   list.classList.add('show')
   list.classList.remove('hidden')
@@ -83,7 +78,6 @@ const displayList = (btn, list, container, placeHolder, displayFunc, textSearch)
   placeHolder.removeAttribute('disabled')
   placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
   placeHolder.focus()
-  displayFunc
 }
 const hideList = (btn, list, container, placeHolder, textDefault) => {
   btn.style.transform = 'rotate(0deg)'
@@ -95,12 +89,11 @@ const hideList = (btn, list, container, placeHolder, textDefault) => {
   placeHolder.setAttribute('disabled', '')
   placeHolder.setAttribute('placeholder', textDefault)
   placeHolder.value = ''
-  dom.emptyDOM(list)
 }
 
-const toggleList = (btn, list, container, placeHolder, displayFunc, textSearch, textDefault) => {
+const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) => {
   if (list.classList.contains('hidden')) {
-    displayList(btn, list, container, placeHolder, displayFunc, textSearch)
+    displayList(btn, list, container, placeHolder, textSearch)
   } else {
     hideList(btn, list, container, placeHolder, textDefault)
   }
@@ -142,5 +135,10 @@ domLinker.searchBar.addEventListener('input', e => {
   }
 })
 
-domLinker.ingredientsIconBtn.addEventListener('click', () => toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, displayIngredients(), 'ingrédient', 'Ingrédients'))
-domLinker.ingredientsSearchBar.addEventListener('input', (e) => ingredientsSearch(e.target.value))
+domLinker.ingredientsIconBtn.addEventListener('click', () => toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients'))
+
+domLinker.ustensilesIconBtn.addEventListener('click', () => toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles'))
+
+domLinker.appareilsIconBtn.addEventListener('click', () => toggleList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'appareil', 'Appareils'))
+
+

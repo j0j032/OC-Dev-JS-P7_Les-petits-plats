@@ -24,10 +24,11 @@ module.exports = {
   },
 
   createFilterListDOM (array, parent) {
-    const listAttributes = [{ class: 'list' }]
+    const listAttributes = [{ class: 'list list-X' }]
+    const listItemAttributes = [{ class: 'list' }]
     const list = createElement('ul', listAttributes, parent, null)
     array.forEach(el => {
-      createElement('li', listAttributes, list, el)
+      createElement('li', listItemAttributes, list, el)
     })
   }
 }
