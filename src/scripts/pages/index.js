@@ -86,9 +86,12 @@ const displayAllRecipes = async () => {
 }
 displayAllRecipes()
 
+const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
+const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
+
 const mainSearchBar = async (search) => {
   let recipes = await api.getRecipes()
-  recipes = recipes.filter(recipe => recipe.name.toLowerCase().includes(search) || recipe.description.toLowerCase().includes(search))
+  recipes = recipes.filter(recipe => isIncluded(recipe.name, search) || isIncluded(recipe.description, search) || isFound(recipe.ingredients, 'ingredient', search))
   displayRecipe(recipes)
   if (recipes.length <= 0) {
     domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
