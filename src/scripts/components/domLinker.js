@@ -8,6 +8,7 @@ module.exports = {
   ingredientMainBtn: document.querySelector('.filter__btn--ingredient'),
   appareilMainBtn: document.querySelector('.filter__btn--appareil'),
   ustensileMainBtn: document.querySelector('.filter__btn--ustensile'),
+  ustensilesList: document.querySelector('.ustensiles__list'),
   arrowIcon: document.querySelectorAll('.filter__btn > span'),
   ingredientsSearchBar: document.querySelector('.ingredients__searchBar')
 }

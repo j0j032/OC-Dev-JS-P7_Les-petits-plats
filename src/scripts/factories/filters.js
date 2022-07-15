@@ -5,12 +5,22 @@ module.exports = {
   getIngredientList (data, array) {
     const { ingredients } = data
 
-    const getAllIngredients = () => {
-      for (const ingredient of ingredients) {
-        array.push(ingredient.ingredient)
-      }
+    for (const item of ingredients) {
+      array.push(item.ingredient)
     }
-    getAllIngredients()
+  },
+
+  getAppareilsList (data, array) {
+    data.forEach(el => {
+      array.push(el.appliance)
+    })
+  },
+
+  getUstensilesList (data, array) {
+    const { ustensils } = data
+    ustensils.forEach(el => {
+      array.push(el)
+    })
   },
 
   createFilterListDOM (array, parent) {
