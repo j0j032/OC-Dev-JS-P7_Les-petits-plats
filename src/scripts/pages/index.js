@@ -40,6 +40,7 @@ const displayUstList = async () => {
 }
 // List search
 const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterBtns, selector) => {
+  console.log(state.tags)
   if (inputValue.length >= 3) {
     array = array.filter(item => isIncluded(item, inputValue))
     dom.emptyDOM(container)
@@ -47,7 +48,6 @@ const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterB
     container.classList.add('onSearch')
   } else if (inputValue.length >= 3 && array.length === 0) {
     console.log('Rien')
-    array.push('Aucun résultat')
   } else if (inputValue.length < 3) {
     dom.emptyDOM(container)
     container.classList.remove('onSearch')

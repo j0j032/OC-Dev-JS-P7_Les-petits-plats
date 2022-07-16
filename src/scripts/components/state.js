@@ -6,8 +6,8 @@ module.exports = {
   tagAppList: [],
   tagUstList: [],
   tags: {
-    ingredient: '',
-    appliance: '',
-    ustensil: ''
+    ingredient: [],
+    appliance: [],
+    ustensil: []
   }
 }

@@ -1,8 +1,9 @@
 .tags{
     display: flex;
-    justify-content:flex-start;
+    justify-content: flex-start;
     height: fit-content;
     padding: 20px 0;
+    gap: 1rem;
 }
 
 .tag{
@@ -10,7 +11,25 @@
     height: 40px;
     min-width: 100px;
     border-radius: 5px;
-    background: $blue;
+    color: $white;
+    font-size: 0.7rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    &--ing{
+        background: $blue;
+    }
+    &--app{
+        background: $green;
+    }
+    &--ust{
+        background: $orange;
+    }
+    &__close{
+        font-size: 1rem;
+        margin-left: 1rem;
+    }
 }
 
 .filters-container{
