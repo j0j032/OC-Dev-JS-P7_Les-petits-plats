@@ -27,7 +27,7 @@ module.exports = {
     }
 
     const createFilterListDOM = (array, parent) => {
-      const listAttributes = [{ class: 'list list-X' }]
+      const listAttributes = [{ class: 'list-X' }]
       const listItemAttributes = [{ class: 'list' }]
       const list = createElement('ul', listAttributes, parent, null)
       array.forEach(el => {
@@ -87,7 +87,11 @@ module.exports = {
       }
     }
 
-    return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList }
-  }
+    const createTag = (value, parent) => {
+      const tagAttribute = [{ class: 'tag' }]
+      createElement('span', tagAttribute, parent, value)
+    }
 
+    return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList, createTag }
+  }
 }

@@ -7,19 +7,32 @@ const { createRecipeCard } = require('../factories/recipe')
 const { createFiltersList } = require('../factories/filters')
 const filterModel = createFiltersList()
 
+let tagIngList = []
+
 const logRecipes = async () => {
   const recipes = await api.getRecipes()
   console.log(recipes)
 }
 logRecipes()
 
+const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
+const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
+
 // Filters algo
+const getTag = (value) => {
+  state.tags.ingredient = value
+  console.log(state.tags.ingredient)
+  filterModel.createTag(state.tags.ingredient, domLinker.tagsContainer)
+}
 
 const displayAllFiltersList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayIngredientList(recipes)
   filterModel.displayAppareilsList(recipes)
   filterModel.displayUstensilsList(recipes)
+
+  tagIngList = document.querySelectorAll('.ingredients__list>ul>li')
+  tagIngList.forEach(el => { el.addEventListener('click', (e) => getTag(e.target.outerText)) })
 }
 displayAllFiltersList()
 
@@ -36,14 +49,14 @@ const displayUstList = async () => {
   filterModel.displayUstensilsList(recipes)
 }
 // List search
-const filterSearch = async (inputValue, array, container, inpuTarget) => {
+const filterSearch = (inputValue, array, container, inpuTarget) => {
   if (inputValue.length >= 3) {
-    array = array.filter(item => item.toLowerCase().includes(inputValue))
+    array = array.filter(item => isIncluded(item, inputValue))
     dom.emptyDOM(container)
     filterModel.createFilterListDOM(array, container)
     container.classList.add('onSearch')
-    console.log(array)
   } else if (inputValue.length >= 3 && array.length === 0) {
+    console.log('Rien')
     array.push('Aucun résultat')
   } else if (inputValue.length < 3) {
     dom.emptyDOM(container)
@@ -64,11 +77,15 @@ const filterSearch = async (inputValue, array, container, inpuTarget) => {
 }
 
 domLinker.ingredientsIconBtn.addEventListener('click', () => filterModel.toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients'))
+
 domLinker.ustensilesIconBtn.addEventListener('click', () => filterModel.toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles'))
+
 domLinker.appareilsIconBtn.addEventListener('click', () => filterModel.toggleList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'appareil', 'Appareils'))
 
 domLinker.ingredientsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allIngredients, domLinker.ingredientsList, e.target))
+
 domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allAppareils, domLinker.appareilsList, e.target))
+
 domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allUstensils, domLinker.ustensilesList, e.target))
 
 // Display recipes
@@ -85,9 +102,6 @@ const displayAllRecipes = async () => {
   displayRecipe(recipes)
 }
 displayAllRecipes()
-
-const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
-const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
 
 const mainSearchBar = async (search) => {
   let recipes = await api.getRecipes()
