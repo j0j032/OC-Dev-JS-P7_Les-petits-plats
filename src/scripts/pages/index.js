@@ -7,8 +7,6 @@ const { createRecipeCard } = require('../factories/recipe')
 const { createFiltersList } = require('../factories/filters')
 const filterModel = createFiltersList()
 
-let tagIngList = []
-
 const logRecipes = async () => {
   const recipes = await api.getRecipes()
   console.log(recipes)
@@ -19,20 +17,12 @@ const isIncluded = (property, value) => property.toLowerCase().includes(value.to
 const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
 
 // Filters algo
-const getTag = (value) => {
-  state.tags.ingredient = value
-  console.log(state.tags.ingredient)
-  filterModel.createTag(state.tags.ingredient, domLinker.tagsContainer)
-}
 
 const displayAllFiltersList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayIngredientList(recipes)
   filterModel.displayAppareilsList(recipes)
   filterModel.displayUstensilsList(recipes)
-
-  tagIngList = document.querySelectorAll('.ingredients__list>ul>li')
-  tagIngList.forEach(el => { el.addEventListener('click', (e) => getTag(e.target.outerText)) })
 }
 displayAllFiltersList()
 
@@ -49,11 +39,11 @@ const displayUstList = async () => {
   filterModel.displayUstensilsList(recipes)
 }
 // List search
-const filterSearch = (inputValue, array, container, inpuTarget) => {
+const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterBtns, selector) => {
   if (inputValue.length >= 3) {
     array = array.filter(item => isIncluded(item, inputValue))
     dom.emptyDOM(container)
-    filterModel.createFilterListDOM(array, container)
+    filterModel.createFilterListDOM(array, container, tagList, filterBtns, selector)
     container.classList.add('onSearch')
   } else if (inputValue.length >= 3 && array.length === 0) {
     console.log('Rien')
@@ -82,11 +72,11 @@ domLinker.ustensilesIconBtn.addEventListener('click', () => filterModel.toggleLi
 
 domLinker.appareilsIconBtn.addEventListener('click', () => filterModel.toggleList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'appareil', 'Appareils'))
 
-domLinker.ingredientsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allIngredients, domLinker.ingredientsList, e.target))
+domLinker.ingredientsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allIngredients, domLinker.ingredientsList, e.target, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li'))
 
-domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allAppareils, domLinker.appareilsList, e.target))
+domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allAppareils, domLinker.appareilsList, e.target, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li'))
 
-domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allUstensils, domLinker.ustensilesList, e.target))
+domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allUstensils, domLinker.ustensilesList, e.target, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li'))
 
 // Display recipes
 const displayRecipe = (data) => {
