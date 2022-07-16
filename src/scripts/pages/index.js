@@ -13,6 +13,9 @@ const logRecipes = async () => {
 }
 logRecipes()
 
+const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
+const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
+
 // Filters algo
 
 const displayAllFiltersList = async () => {
@@ -36,15 +39,15 @@ const displayUstList = async () => {
   filterModel.displayUstensilsList(recipes)
 }
 // List search
-const filterSearch = async (inputValue, array, container, inpuTarget) => {
+const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterBtns, selector) => {
+  console.log(state.tags)
   if (inputValue.length >= 3) {
-    array = array.filter(item => item.toLowerCase().includes(inputValue))
+    array = array.filter(item => isIncluded(item, inputValue))
     dom.emptyDOM(container)
-    filterModel.createFilterListDOM(array, container)
+    filterModel.createFilterListDOM(array, container, tagList, filterBtns, selector)
     container.classList.add('onSearch')
-    console.log(array)
   } else if (inputValue.length >= 3 && array.length === 0) {
-    array.push('Aucun résultat')
+    console.log('Rien')
   } else if (inputValue.length < 3) {
     dom.emptyDOM(container)
     container.classList.remove('onSearch')
@@ -64,12 +67,16 @@ const filterSearch = async (inputValue, array, container, inpuTarget) => {
 }
 
 domLinker.ingredientsIconBtn.addEventListener('click', () => filterModel.toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients'))
+
 domLinker.ustensilesIconBtn.addEventListener('click', () => filterModel.toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles'))
+
 domLinker.appareilsIconBtn.addEventListener('click', () => filterModel.toggleList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'appareil', 'Appareils'))
 
-domLinker.ingredientsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allIngredients, domLinker.ingredientsList, e.target))
-domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allAppareils, domLinker.appareilsList, e.target))
-domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allUstensils, domLinker.ustensilesList, e.target))
+domLinker.ingredientsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allIngredients, domLinker.ingredientsList, e.target, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li'))
+
+domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allAppareils, domLinker.appareilsList, e.target, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li'))
+
+domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allUstensils, domLinker.ustensilesList, e.target, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li'))
 
 // Display recipes
 const displayRecipe = (data) => {
@@ -85,9 +92,6 @@ const displayAllRecipes = async () => {
   displayRecipe(recipes)
 }
 displayAllRecipes()
-
-const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
-const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
 
 const mainSearchBar = async (search) => {
   let recipes = await api.getRecipes()

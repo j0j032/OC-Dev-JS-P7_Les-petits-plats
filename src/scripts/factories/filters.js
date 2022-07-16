@@ -26,13 +26,15 @@ module.exports = {
       })
     }
 
-    const createFilterListDOM = (array, parent) => {
-      const listAttributes = [{ class: 'list list-X' }]
-      const listItemAttributes = [{ class: 'list' }]
+    // display lists methods
+
+    const createFilterListDOM = (array, parent, tagList, filterBtns, selector) => {
+      const listAttributes = [{ class: 'list' }]
       const list = createElement('ul', listAttributes, parent, null)
       array.forEach(el => {
-        createElement('li', listItemAttributes, list, el)
+        createElement('li', listAttributes, list, el)
       })
+      tagEvent(tagList, filterBtns, selector)
     }
 
     const displayIngredientList = (data) => {
@@ -40,13 +42,13 @@ module.exports = {
         getIngredientList(recipe, state.allIngredients)
       })
       state.allIngredients = [...new Set(state.allIngredients)]
-      createFilterListDOM(state.allIngredients, domLinker.ingredientsList)
+      createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
     }
 
     const displayAppareilsList = (data) => {
       getAppareilsList(data, state.allAppareils)
       state.allAppareils = [...new Set(state.allAppareils)]
-      createFilterListDOM(state.allAppareils, domLinker.appareilsList)
+      createFilterListDOM(state.allAppareils, domLinker.appareilsList, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li')
     }
 
     const displayUstensilsList = (data) => {
@@ -54,8 +56,10 @@ module.exports = {
         getUstensilesList(recipe, state.allUstensils)
       })
       state.allUstensils = [...new Set(state.allUstensils)]
-      createFilterListDOM(state.allUstensils, domLinker.ustensilesList)
+      createFilterListDOM(state.allUstensils, domLinker.ustensilesList, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li')
     }
+
+    // display DOM filters list Methods
 
     const displayList = (btn, list, container, placeHolder, textSearch) => {
       btn.style.transform = 'rotate(180deg)'
@@ -87,7 +91,36 @@ module.exports = {
       }
     }
 
-    return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList }
-  }
+    // Tag Methods
+    const getLastItem = (arr) => {
+      const lastItem = arr[arr.length - 1]
+      return lastItem
+    }
 
+    const createTag = (value, parent, category) => {
+      const tagAttribute = [{ class: category }]
+      const closeAttribute = [{ class: 'tag__close bi bi-x-circle' }]
+      const tag = createElement('span', tagAttribute, parent, value)
+      createElement('i', closeAttribute, tag, null)
+    }
+
+    const getTag = (tagList, value) => {
+      tagList.push(value)
+      if (state.allIngredients.includes(value)) {
+        createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ing')
+      } else if (state.allAppareils.includes(value)) {
+        createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--app')
+      } else if (state.allUstensils.includes(value)) {
+        createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ust')
+      }
+      console.log(state.tags)
+    }
+
+    const tagEvent = (tagList, filterBtns, selector) => {
+      filterBtns = document.querySelectorAll(selector)
+      filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText)) })
+    }
+
+    return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList, createTag }
+  }
 }

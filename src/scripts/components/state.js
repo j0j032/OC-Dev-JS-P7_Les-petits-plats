@@ -1,5 +1,13 @@
 module.exports = {
   allIngredients: [],
   allAppareils: [],
-  allUstensils: []
+  allUstensils: [],
+  tagIngList: [],
+  tagAppList: [],
+  tagUstList: [],
+  tags: {
+    ingredient: [],
+    appliance: [],
+    ustensil: []
+  }
 }

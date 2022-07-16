@@ -22,5 +22,6 @@ module.exports = {
   appareilsSearchBar: document.querySelector('.appareils__searchBar'),
 
   arrowIcon: document.querySelectorAll('.filter__btn > span'),
-  listUl: document.querySelector('.list-X')
+  listUl: document.querySelector('.list-X'),
+  tagsContainer: document.querySelector('.tags')
 }
