@@ -1,7 +1,7 @@
-const { createElement } = require('../components/dom')
+const { createElement, emptyDOM, isIncluded, isFound } = require('../components/dom')
 const domLinker = require('../components/domLinker')
-
 const state = require('../components/state')
+const { createRecipeCard } = require('./recipe')
 
 module.exports = {
 
@@ -104,14 +104,41 @@ module.exports = {
       createElement('i', closeAttribute, tag, null)
     }
 
+    const displayUpdateDOM = (recipes) => {
+      emptyDOM(domLinker.resultsContainer)
+      recipes.forEach(recipe => {
+        const recipeModel = createRecipeCard(recipe)
+        const recipeCardDOM = recipeModel.getRecipeCardDOM()
+        domLinker.resultsContainer.appendChild(recipeCardDOM)
+      })
+    }
+    const applyFilterApp = () => {
+      state.allRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
+      displayUpdateDOM(state.allRecipes)
+      console.log(state.allRecipes)
+    }
+    const applyFilterIng = () => {
+      state.allRecipes = state.allRecipes.filter(recipe => isFound(recipe.ingredients, 'ingredient', getLastItem(state.tags.ingredient)))
+      displayUpdateDOM(state.allRecipes)
+      console.log(state.allRecipes)
+    }
+    const applyFilterUst = () => {
+      state.allRecipes = state.allRecipes.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
+      displayUpdateDOM(state.allRecipes)
+      console.log(state.allRecipes)
+    }
+
     const getTag = (tagList, value) => {
       tagList.push(value)
       if (state.allIngredients.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ing')
+        applyFilterIng()
       } else if (state.allAppareils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--app')
+        applyFilterApp()
       } else if (state.allUstensils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ust')
+        applyFilterUst()
       }
       console.log(state.tags)
     }

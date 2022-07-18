@@ -23,6 +23,10 @@ const emptyDOM = el => {
   }
 }
 
+const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
+
+const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
+
 module.exports = {
-  createElement, emptyDOM
+  createElement, emptyDOM, isIncluded, isFound
 }

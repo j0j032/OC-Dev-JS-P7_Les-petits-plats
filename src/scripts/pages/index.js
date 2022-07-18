@@ -8,16 +8,12 @@ const { createFiltersList } = require('../factories/filters')
 const filterModel = createFiltersList()
 
 const logRecipes = async () => {
-  const recipes = await api.getRecipes()
-  console.log(recipes)
+  state.allRecipes = await api.getRecipes()
+  console.log(state.allRecipes)
 }
-logRecipes()
+window.onload = logRecipes()
 
-const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
-const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
-
-// Filters algo
-
+// Filters display
 const displayAllFiltersList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayIngredientList(recipes)
@@ -38,15 +34,16 @@ const displayUstList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayUstensilsList(recipes)
 }
+
 // List search
 const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterBtns, selector) => {
   console.log(state.tags)
   if (inputValue.length >= 3) {
-    array = array.filter(item => isIncluded(item, inputValue))
+    array = array.filter(item => dom.isIncluded(item, inputValue))
     dom.emptyDOM(container)
     filterModel.createFilterListDOM(array, container, tagList, filterBtns, selector)
     container.classList.add('onSearch')
-  } else if (inputValue.length >= 3 && array.length === 0) {
+  } else if (inputValue.length >= 3 && !array.length > 0) {
     console.log('Rien')
   } else if (inputValue.length < 3) {
     dom.emptyDOM(container)
@@ -88,19 +85,28 @@ const displayRecipe = (data) => {
 }
 
 const displayAllRecipes = async () => {
-  const recipes = await api.getRecipes()
-  displayRecipe(recipes)
+  state.allRecipes = await api.getRecipes()
+  if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+    displayRecipe(state.allRecipes)
+  }
 }
 displayAllRecipes()
 
-const mainSearchBar = async (search) => {
-  let recipes = await api.getRecipes()
-  recipes = recipes.filter(recipe => isIncluded(recipe.name, search) || isIncluded(recipe.description, search) || isFound(recipe.ingredients, 'ingredient', search))
-  displayRecipe(recipes)
-  if (recipes.length <= 0) {
+const mainSearchBar = (search) => {
+  if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+    state.allRecipes = state.allRecipes.filter(recipe => dom.isIncluded(recipe.name, search) || dom.isIncluded(recipe.description, search) || dom.isFound(recipe.ingredients, 'ingredient', search))
+    displayRecipe(state.allRecipes)
+    if (state.allRecipes.length <= 0) {
+      domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
+    }
+    console.log(state.allRecipes)
+  } else if (state.tags.appliance.length > 0) {
+    state.allRecipes = state.allRecipes.filter(item => dom.isIncluded(item.name, search) || dom.isIncluded(item.description, search) || dom.isFound(item.ingredients, 'ingredient', search))
+    displayRecipe(state.allRecipes)
+  }
+  if (state.allRecipes.length <= 0) {
     domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
   }
-  console.log(recipes)
 }
 
 domLinker.searchBar.addEventListener('input', e => {
