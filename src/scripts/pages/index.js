@@ -43,8 +43,6 @@ const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterB
     dom.emptyDOM(container)
     filterModel.createFilterListDOM(array, container, tagList, filterBtns, selector)
     container.classList.add('onSearch')
-  } else if (inputValue.length >= 3 && !array.length > 0) {
-    console.log('Rien')
   } else if (inputValue.length < 3) {
     dom.emptyDOM(container)
     container.classList.remove('onSearch')
@@ -60,6 +58,9 @@ const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterB
         displayUstList()
         break
     }
+  }
+  if (inputValue.length >= 3 && array.length === 0) {
+    container.textContent = 'Aucun résultat'
   }
 }
 
@@ -100,7 +101,7 @@ const mainSearchBar = (search) => {
     }
   } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
     console.log('NewResult', state.newResult)
-    let finalResult = state.newResult.filter(recipe => dom.isIncluded(recipe.name, search) || dom.isIncluded(recipe.description, search) || dom.isFound(recipe.ingredients, 'ingredient', search))
+    const finalResult = state.newResult.filter(recipe => dom.isIncluded(recipe.name, search) || dom.isIncluded(recipe.description, search) || dom.isFound(recipe.ingredients, 'ingredient', search))
     displayRecipe(finalResult)
     console.log('finalResult', finalResult)
     if (finalResult.length === 0) {

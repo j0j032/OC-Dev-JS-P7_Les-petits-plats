@@ -119,10 +119,6 @@ module.exports = {
       console.log('NewResult', state.newResult)
     }
     const applyFilterIng = () => {
-      /* state.newResult = state.allRecipes.filter(recipe => isFound(recipe.ingredients, 'ingredient', getLastItem(state.tags.ingredient)))
-      displayUpdateDOM(state.newResult)
-      console.log('NewResult', state.newResult) */
-      // state.newResult = state.allRecipes
       state.tags.ingredient.forEach(tag => {
         state.newResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
       })
@@ -134,14 +130,6 @@ module.exports = {
       displayUpdateDOM(state.newResult)
       console.log('NewResult', state.newResult)
     }
-    /* const applyAllFilters = () => {
-      state.newResult = state.allRecipes
-      state.tags.ingredient.forEach(tag => {
-        state.newResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
-      })
-      displayUpdateDOM(state.newResult)
-      console.log('NewResult', state.newResult)
-    } */
 
     const getTag = (tagList, value) => {
       if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
@@ -151,15 +139,15 @@ module.exports = {
       if (state.allIngredients.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ing')
         applyFilterIng()
-        // applyAllFilters()
       } else if (state.allAppareils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--app')
         applyFilterApp()
-        // applyAllFilters()
       } else if (state.allUstensils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ust')
         applyFilterUst()
-        // applyAllFilters()
+      }
+      if (state.newResult.length === 0) {
+        domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
       }
       console.log('Tags', state.tags)
     }
