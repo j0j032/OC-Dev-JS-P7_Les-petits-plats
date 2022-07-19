@@ -76,6 +76,7 @@ domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.tar
 domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allUstensils, domLinker.ustensilesList, e.target, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li'))
 
 // Display recipes
+
 const displayRecipe = (data) => {
   data.forEach(recipe => {
     const recipeModel = createRecipeCard(recipe)
@@ -86,11 +87,9 @@ const displayRecipe = (data) => {
 
 const displayAllRecipes = async () => {
   state.allRecipes = await api.getRecipes()
-  if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
-    displayRecipe(state.allRecipes)
-  }
+  displayRecipe(state.allRecipes)
 }
-displayAllRecipes()
+window.onload = displayAllRecipes()
 
 const mainSearchBar = (search) => {
   if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
@@ -99,13 +98,14 @@ const mainSearchBar = (search) => {
     if (state.allRecipes.length <= 0) {
       domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
     }
-    console.log(state.allRecipes)
-  } else if (state.tags.appliance.length > 0) {
-    state.allRecipes = state.allRecipes.filter(item => dom.isIncluded(item.name, search) || dom.isIncluded(item.description, search) || dom.isFound(item.ingredients, 'ingredient', search))
-    displayRecipe(state.allRecipes)
-  }
-  if (state.allRecipes.length <= 0) {
-    domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
+  } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
+    console.log('NewResult', state.newResult)
+    let finalResult = state.newResult.filter(recipe => dom.isIncluded(recipe.name, search) || dom.isIncluded(recipe.description, search) || dom.isFound(recipe.ingredients, 'ingredient', search))
+    displayRecipe(finalResult)
+    console.log('finalResult', finalResult)
+    if (finalResult.length === 0) {
+      domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
+    }
   }
 }
 
@@ -115,6 +115,10 @@ domLinker.searchBar.addEventListener('input', e => {
     mainSearchBar(e.target.value)
   } else {
     dom.emptyDOM(domLinker.resultsContainer)
-    displayAllRecipes()
+    if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+      displayAllRecipes()
+    } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
+      displayRecipe(state.newResult)
+    }
   }
 })

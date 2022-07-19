@@ -112,35 +112,56 @@ module.exports = {
         domLinker.resultsContainer.appendChild(recipeCardDOM)
       })
     }
+
     const applyFilterApp = () => {
-      state.allRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
-      displayUpdateDOM(state.allRecipes)
-      console.log(state.allRecipes)
+      state.newResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult)
     }
     const applyFilterIng = () => {
-      state.allRecipes = state.allRecipes.filter(recipe => isFound(recipe.ingredients, 'ingredient', getLastItem(state.tags.ingredient)))
-      displayUpdateDOM(state.allRecipes)
-      console.log(state.allRecipes)
+      /* state.newResult = state.allRecipes.filter(recipe => isFound(recipe.ingredients, 'ingredient', getLastItem(state.tags.ingredient)))
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult) */
+      // state.newResult = state.allRecipes
+      state.tags.ingredient.forEach(tag => {
+        state.newResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
+      })
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult)
     }
     const applyFilterUst = () => {
-      state.allRecipes = state.allRecipes.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
-      displayUpdateDOM(state.allRecipes)
-      console.log(state.allRecipes)
+      state.newResult = state.newResult.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult)
     }
+    /* const applyAllFilters = () => {
+      state.newResult = state.allRecipes
+      state.tags.ingredient.forEach(tag => {
+        state.newResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
+      })
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult)
+    } */
 
     const getTag = (tagList, value) => {
+      if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+        state.newResult = state.allRecipes
+      }
       tagList.push(value)
       if (state.allIngredients.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ing')
         applyFilterIng()
+        // applyAllFilters()
       } else if (state.allAppareils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--app')
         applyFilterApp()
+        // applyAllFilters()
       } else if (state.allUstensils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ust')
         applyFilterUst()
+        // applyAllFilters()
       }
-      console.log(state.tags)
+      console.log('Tags', state.tags)
     }
 
     const tagEvent = (tagList, filterBtns, selector) => {
