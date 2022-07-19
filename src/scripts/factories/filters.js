@@ -102,6 +102,7 @@ module.exports = {
       const closeAttribute = [{ class: 'tag__close bi bi-x-circle' }]
       const tag = createElement('span', tagAttribute, parent, value)
       createElement('i', closeAttribute, tag, null)
+      closeTagEvent('.tag__close')
     }
 
     const displayUpdateDOM = (recipes) => {
@@ -152,9 +153,28 @@ module.exports = {
       console.log('Tags', state.tags)
     }
 
+    const removeTag = (event, arr) => {
+      const tagName = event.target.parentElement.firstChild.data
+      arr.forEach(tag => {
+        console.log(tag)
+        const tagToDelete = arr.indexOf(tagName)
+        if (tagToDelete !== -1) {
+          arr.splice(tagToDelete, 1)
+        }
+      })
+      console.log(arr)
+      event.target.parentElement.remove()
+      state.newResult = state.allRecipes
+      displayUpdateDOM(state.newResult)
+    }
+
     const tagEvent = (tagList, filterBtns, selector) => {
       filterBtns = document.querySelectorAll(selector)
       filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText)) })
+    }
+    const closeTagEvent = (selector) => {
+      const removeTagBtn = document.querySelectorAll(selector)
+      removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e, state.tags.appliance)) })
     }
 
     return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList, createTag }
