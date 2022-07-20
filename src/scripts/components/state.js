@@ -1,4 +1,6 @@
 module.exports = {
+  allRecipes: [],
+  newResult: [],
   allIngredients: [],
   allAppareils: [],
   allUstensils: [],

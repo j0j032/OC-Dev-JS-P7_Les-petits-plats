@@ -1,7 +1,7 @@
-const { createElement } = require('../components/dom')
+const { createElement, emptyDOM, isIncluded, isFound } = require('../components/dom')
 const domLinker = require('../components/domLinker')
-
 const state = require('../components/state')
+const { createRecipeCard } = require('./recipe')
 
 module.exports = {
 
@@ -102,23 +102,103 @@ module.exports = {
       const closeAttribute = [{ class: 'tag__close bi bi-x-circle' }]
       const tag = createElement('span', tagAttribute, parent, value)
       createElement('i', closeAttribute, tag, null)
+      closeTagEvent('.tag__close')
+      console.log('Tags update after push:', state.tags)
+    }
+
+    const displayUpdateDOM = (recipes) => {
+      emptyDOM(domLinker.resultsContainer)
+      recipes.forEach(recipe => {
+        const recipeModel = createRecipeCard(recipe)
+        const recipeCardDOM = recipeModel.getRecipeCardDOM()
+        domLinker.resultsContainer.appendChild(recipeCardDOM)
+      })
+    }
+
+    const applyFilterApp = () => {
+      state.newResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult)
+    }
+    const applyFilterIng = () => {
+      state.tags.ingredient.forEach(tag => {
+        state.newResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
+      })
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult)
+    }
+    const applyFilterUst = () => {
+      state.newResult = state.newResult.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
+      displayUpdateDOM(state.newResult)
+      console.log('NewResult', state.newResult)
     }
 
     const getTag = (tagList, value) => {
+      if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+        state.newResult = state.allRecipes
+      }
       tagList.push(value)
       if (state.allIngredients.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ing')
+        applyFilterIng()
       } else if (state.allAppareils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--app')
+        applyFilterApp()
       } else if (state.allUstensils.includes(value)) {
         createTag(getLastItem(tagList), domLinker.tagsContainer, 'tag tag--ust')
+        applyFilterUst()
       }
-      console.log(state.tags)
+      if (state.newResult.length === 0) {
+        domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
+      }
+    }
+    const displayBackAllRecipes = () => {
+      if (state.tags.appliance.length === 0 && state.tags.ingredient.length === 0 && state.tags.ustensil.length === 0) {
+        console.log('plus de tag')
+        state.newResult = state.allRecipes
+      } else {
+        state.newResult = state.allRecipes
+        console.log('tjs tag')
+        for (const category of Object.keys(state.tags)) {
+          const content = state.tags[category]
+          console.log(category, content)
+
+          content.forEach(el => {
+            console.log('Element', el)
+            state.newResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, el) || isFound(recipe.ingredients, 'ingredient', el) || recipe.ustensils.includes(el))
+          })
+        }
+        console.log('displayBackFiltered', state.newResult)
+      }
+      displayUpdateDOM(state.newResult)
+    }
+    const removeTag = (event) => {
+      const tagName = event.target.parentElement.firstChild.data
+      const tagDom = event.target.parentElement
+
+      for (const category of Object.keys(state.tags)) {
+        const content = state.tags[category]
+        content.forEach(el => {
+          console.log(el, 'still activated')
+          const tagToDelete = content.indexOf(tagName)
+          if (tagToDelete !== -1) {
+            content.splice(tagToDelete, 1)
+          }
+        })
+      }
+      console.log('Tags update after remove:', state.tags)
+      tagDom.remove()
+      displayBackAllRecipes()
+      console.log('newResult after remove tag', state.newResult)
     }
 
     const tagEvent = (tagList, filterBtns, selector) => {
       filterBtns = document.querySelectorAll(selector)
       filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText)) })
+    }
+    const closeTagEvent = (selector, arr) => {
+      const removeTagBtn = document.querySelectorAll(selector)
+      removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e)) })
     }
 
     return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList, createTag }

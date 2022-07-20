@@ -1,30 +1,27 @@
 /* eslint-disable no-unused-expressions */
 const api = require('../components/api')
 const state = require('../components/state')
-const dom = require('../components/dom')
+const { isIncluded, isFound, noResult, emptyDOM } = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const { createRecipeCard } = require('../factories/recipe')
 const { createFiltersList } = require('../factories/filters')
+const { resultsContainer } = require('../components/domLinker')
 const filterModel = createFiltersList()
 
 const logRecipes = async () => {
-  const recipes = await api.getRecipes()
-  console.log(recipes)
+  state.allRecipes = await api.getRecipes()
+  console.log(state.allRecipes)
 }
-logRecipes()
+window.onload = logRecipes()
 
-const isIncluded = (property, value) => property.toLowerCase().includes(value.toLowerCase())
-const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
-
-// Filters algo
-
+// Filters display
 const displayAllFiltersList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayIngredientList(recipes)
   filterModel.displayAppareilsList(recipes)
   filterModel.displayUstensilsList(recipes)
 }
-displayAllFiltersList()
+window.onload = displayAllFiltersList()
 
 const displayIngList = async () => {
   const recipes = await api.getRecipes()
@@ -38,18 +35,17 @@ const displayUstList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayUstensilsList(recipes)
 }
+
 // List search
 const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterBtns, selector) => {
   console.log(state.tags)
   if (inputValue.length >= 3) {
     array = array.filter(item => isIncluded(item, inputValue))
-    dom.emptyDOM(container)
+    emptyDOM(container)
     filterModel.createFilterListDOM(array, container, tagList, filterBtns, selector)
     container.classList.add('onSearch')
-  } else if (inputValue.length >= 3 && array.length === 0) {
-    console.log('Rien')
   } else if (inputValue.length < 3) {
-    dom.emptyDOM(container)
+    emptyDOM(container)
     container.classList.remove('onSearch')
     array = []
     switch (inpuTarget) {
@@ -63,6 +59,9 @@ const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterB
         displayUstList()
         break
     }
+  }
+  if (inputValue.length >= 3 && array.length === 0) {
+    container.textContent = 'Aucun résultat'
   }
 }
 
@@ -79,36 +78,49 @@ domLinker.appareilsSearchBar.addEventListener('input', (e) => filterSearch(e.tar
 domLinker.ustensilesSearchBar.addEventListener('input', (e) => filterSearch(e.target.value, state.allUstensils, domLinker.ustensilesList, e.target, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li'))
 
 // Display recipes
+
 const displayRecipe = (data) => {
   data.forEach(recipe => {
     const recipeModel = createRecipeCard(recipe)
     const recipeCardDOM = recipeModel.getRecipeCardDOM()
-    domLinker.resultsContainer.appendChild(recipeCardDOM)
+    resultsContainer.appendChild(recipeCardDOM)
   })
 }
 
 const displayAllRecipes = async () => {
-  const recipes = await api.getRecipes()
-  displayRecipe(recipes)
+  state.allRecipes = await api.getRecipes()
+  displayRecipe(state.allRecipes)
 }
-displayAllRecipes()
+window.onload = displayAllRecipes()
 
-const mainSearchBar = async (search) => {
-  let recipes = await api.getRecipes()
-  recipes = recipes.filter(recipe => isIncluded(recipe.name, search) || isIncluded(recipe.description, search) || isFound(recipe.ingredients, 'ingredient', search))
-  displayRecipe(recipes)
-  if (recipes.length <= 0) {
-    domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
+const mainSearchBar = (search) => {
+  if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+    state.allRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, search) || isIncluded(recipe.description, search) || isFound(recipe.ingredients, 'ingredient', search))
+    displayRecipe(state.allRecipes)
+    if (state.allRecipes.length <= 0) {
+      noResult(resultsContainer)
+    }
+  } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
+    console.log('NewResult', state.newResult)
+    const finalResult = state.newResult.filter(recipe => isIncluded(recipe.name, search) || isIncluded(recipe.description, search) || isFound(recipe.ingredients, 'ingredient', search))
+    displayRecipe(finalResult)
+    console.log('finalResult', finalResult)
+    if (finalResult.length === 0) {
+      noResult(resultsContainer)
+    }
   }
-  console.log(recipes)
 }
 
 domLinker.searchBar.addEventListener('input', e => {
   if (e.target.value.length >= 3) {
-    dom.emptyDOM(domLinker.resultsContainer)
+    emptyDOM(resultsContainer)
     mainSearchBar(e.target.value)
   } else {
-    dom.emptyDOM(domLinker.resultsContainer)
-    displayAllRecipes()
+    emptyDOM(resultsContainer)
+    if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+      displayAllRecipes()
+    } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
+      displayRecipe(state.newResult)
+    }
   }
 })
