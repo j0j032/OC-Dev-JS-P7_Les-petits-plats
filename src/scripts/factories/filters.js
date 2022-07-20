@@ -152,9 +152,30 @@ module.exports = {
         domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
       }
     }
+    const displayBackAllRecipes = () => {
+      if (state.tags.appliance.length === 0 && state.tags.ingredient.length === 0 && state.tags.ustensil.length === 0) {
+        console.log('plus de tag')
+        state.newResult = state.allRecipes
+      } else {
+        state.newResult = state.allRecipes
+        console.log('tjs tag')
+        for (const category of Object.keys(state.tags)) {
+          const content = state.tags[category]
+          console.log(category, content)
 
+          content.forEach(el => {
+            console.log('Element', el)
+            state.newResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, el) || isFound(recipe.ingredients, 'ingredient', el) || recipe.ustensils.includes(el))
+          })
+        }
+        console.log('displayBackFiltered', state.newResult)
+      }
+      displayUpdateDOM(state.newResult)
+    }
     const removeTag = (event) => {
       const tagName = event.target.parentElement.firstChild.data
+      const tagDom = event.target.parentElement
+
       for (const category of Object.keys(state.tags)) {
         const content = state.tags[category]
         content.forEach(el => {
@@ -166,9 +187,9 @@ module.exports = {
         })
       }
       console.log('Tags update after remove:', state.tags)
-      event.target.parentElement.remove()
-      state.newResult = state.allRecipes
-      displayUpdateDOM(state.newResult)
+      tagDom.remove()
+      displayBackAllRecipes()
+      console.log('newResult after remove tag', state.newResult)
     }
 
     const tagEvent = (tagList, filterBtns, selector) => {
