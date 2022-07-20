@@ -27,6 +27,10 @@ const isIncluded = (property, value) => property.toLowerCase().includes(value.to
 
 const isFound = (array, property, value) => array.find(item => isIncluded(item[property], value))
 
+const noResult = (container) => {
+  container.textContent = 'Aucune recette ne correspond à votre recherche'
+}
+
 module.exports = {
-  createElement, emptyDOM, isIncluded, isFound
+  createElement, emptyDOM, isIncluded, isFound, noResult
 }

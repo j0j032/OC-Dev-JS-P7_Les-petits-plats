@@ -103,6 +103,7 @@ module.exports = {
       const tag = createElement('span', tagAttribute, parent, value)
       createElement('i', closeAttribute, tag, null)
       closeTagEvent('.tag__close')
+      console.log('Tags update after push:', state.tags)
     }
 
     const displayUpdateDOM = (recipes) => {
@@ -150,19 +151,21 @@ module.exports = {
       if (state.newResult.length === 0) {
         domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
       }
-      console.log('Tags', state.tags)
     }
 
-    const removeTag = (event, arr) => {
+    const removeTag = (event) => {
       const tagName = event.target.parentElement.firstChild.data
-      arr.forEach(tag => {
-        console.log(tag)
-        const tagToDelete = arr.indexOf(tagName)
-        if (tagToDelete !== -1) {
-          arr.splice(tagToDelete, 1)
-        }
-      })
-      console.log(arr)
+      for (const category of Object.keys(state.tags)) {
+        const content = state.tags[category]
+        content.forEach(el => {
+          console.log(el, 'still activated')
+          const tagToDelete = content.indexOf(tagName)
+          if (tagToDelete !== -1) {
+            content.splice(tagToDelete, 1)
+          }
+        })
+      }
+      console.log('Tags update after remove:', state.tags)
       event.target.parentElement.remove()
       state.newResult = state.allRecipes
       displayUpdateDOM(state.newResult)
@@ -172,9 +175,9 @@ module.exports = {
       filterBtns = document.querySelectorAll(selector)
       filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText)) })
     }
-    const closeTagEvent = (selector) => {
+    const closeTagEvent = (selector, arr) => {
       const removeTagBtn = document.querySelectorAll(selector)
-      removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e, state.tags.appliance)) })
+      removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e)) })
     }
 
     return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList, createTag }

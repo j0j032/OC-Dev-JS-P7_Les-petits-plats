@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-expressions */
 const api = require('../components/api')
 const state = require('../components/state')
-const dom = require('../components/dom')
+const { isIncluded, isFound, noResult, emptyDOM } = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const { createRecipeCard } = require('../factories/recipe')
 const { createFiltersList } = require('../factories/filters')
+const { resultsContainer } = require('../components/domLinker')
 const filterModel = createFiltersList()
 
 const logRecipes = async () => {
@@ -20,7 +21,7 @@ const displayAllFiltersList = async () => {
   filterModel.displayAppareilsList(recipes)
   filterModel.displayUstensilsList(recipes)
 }
-displayAllFiltersList()
+window.onload = displayAllFiltersList()
 
 const displayIngList = async () => {
   const recipes = await api.getRecipes()
@@ -39,12 +40,12 @@ const displayUstList = async () => {
 const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterBtns, selector) => {
   console.log(state.tags)
   if (inputValue.length >= 3) {
-    array = array.filter(item => dom.isIncluded(item, inputValue))
-    dom.emptyDOM(container)
+    array = array.filter(item => isIncluded(item, inputValue))
+    emptyDOM(container)
     filterModel.createFilterListDOM(array, container, tagList, filterBtns, selector)
     container.classList.add('onSearch')
   } else if (inputValue.length < 3) {
-    dom.emptyDOM(container)
+    emptyDOM(container)
     container.classList.remove('onSearch')
     array = []
     switch (inpuTarget) {
@@ -82,7 +83,7 @@ const displayRecipe = (data) => {
   data.forEach(recipe => {
     const recipeModel = createRecipeCard(recipe)
     const recipeCardDOM = recipeModel.getRecipeCardDOM()
-    domLinker.resultsContainer.appendChild(recipeCardDOM)
+    resultsContainer.appendChild(recipeCardDOM)
   })
 }
 
@@ -94,28 +95,28 @@ window.onload = displayAllRecipes()
 
 const mainSearchBar = (search) => {
   if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
-    state.allRecipes = state.allRecipes.filter(recipe => dom.isIncluded(recipe.name, search) || dom.isIncluded(recipe.description, search) || dom.isFound(recipe.ingredients, 'ingredient', search))
+    state.allRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, search) || isIncluded(recipe.description, search) || isFound(recipe.ingredients, 'ingredient', search))
     displayRecipe(state.allRecipes)
     if (state.allRecipes.length <= 0) {
-      domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
+      noResult(resultsContainer)
     }
   } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
     console.log('NewResult', state.newResult)
-    const finalResult = state.newResult.filter(recipe => dom.isIncluded(recipe.name, search) || dom.isIncluded(recipe.description, search) || dom.isFound(recipe.ingredients, 'ingredient', search))
+    const finalResult = state.newResult.filter(recipe => isIncluded(recipe.name, search) || isIncluded(recipe.description, search) || isFound(recipe.ingredients, 'ingredient', search))
     displayRecipe(finalResult)
     console.log('finalResult', finalResult)
     if (finalResult.length === 0) {
-      domLinker.resultsContainer.textContent = 'Aucune recette ne correspond à votre recherche'
+      noResult(resultsContainer)
     }
   }
 }
 
 domLinker.searchBar.addEventListener('input', e => {
   if (e.target.value.length >= 3) {
-    dom.emptyDOM(domLinker.resultsContainer)
+    emptyDOM(resultsContainer)
     mainSearchBar(e.target.value)
   } else {
-    dom.emptyDOM(domLinker.resultsContainer)
+    emptyDOM(resultsContainer)
     if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
       displayAllRecipes()
     } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
