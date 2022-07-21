@@ -7,6 +7,7 @@ module.exports = {
   ingredientMainBtn: document.querySelector('.filter__btn--ingredient'),
   ingredientsIconBtn: document.getElementById('ingredients__iconBtn'),
   ingredientsList: document.querySelector('.ingredients__list'),
+  ingredientsListUl: document.querySelector('.ingredients__list > ul'),
   ingredientsSearchBar: document.querySelector('.ingredients__searchBar'),
 
   ustensiles: document.querySelector('.ustensiles'),

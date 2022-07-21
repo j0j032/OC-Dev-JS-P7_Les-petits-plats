@@ -35,8 +35,9 @@
 
 .filters-container{
     width: fit-content;
-    display: flex;
-    justify-content: space-between;
+    height: 80px;
+    /* display: flex;
+    justify-content: space-between; */
     gap: 20px;
     position: relative;
 }
@@ -68,126 +69,50 @@
     display: none;
 }
 .absolute{
-    position: absolute;
+    position:absolute;
     z-index: 3;
+    padding-left: 1rem;
     padding-right: 1.9rem;
     padding-bottom: 1.9rem;
+}
+.filter.ingredients{
+    position: absolute;
+    left: 0px;
+    &.absolute{
+        left: 0px;
+    }
+}
+.filter.appareils{
+    position: absolute;
+    left: 190px;
+    &.absolute{
+        left: 190px;
+    }
+}
+.filter.ustensiles{
+    position: absolute;
+    left: 380px;
+    &.absolute{
+        left: 380px;
+    }
 }
 
 .ingredients{
     background-color: $blue;
-    color: $white;
+    @include listContainer;
     &__list{
-        font-size: 0.7rem;
         column-count: 7;
-        column-gap: 1.5rem;
-        >ul.list{
-            list-style: none;
-           >li{
-               cursor: pointer;
-               &:hover{
-                   color: $grey;
-               }
-               margin-bottom: 7px;
-           }
-        }
-        &.onSearch{
-           column-count: 1;
-        }
-       }
-    &__searchBar{
-        width: 60%;
-        background-color: transparent;
-        border: none;
-        &::placeholder{
-            color: $white;
-        }
-        &:focus{
-            color: $white;
-        }
-        &.show{
-            margin-left: 15px;
-            &::placeholder{
-                color:rgba(250, 235, 215, 0.424)            
-            }
-        }
     }
 }
+
 .appareils{
     background-color: $green;
-    color: $white;
-    &__list{
-        font-size: 0.7rem;
-        column-count: 7;
-        column-gap: 1.5rem;
-        >ul.list{
-            list-style: none;
-           >li{
-               cursor: pointer;
-               &:hover{
-                   color: $grey;
-               }
-           }
-        }
-        &.onSearch{
-           column-count: 1;
-        }
-       }
-    &__searchBar{
-        width: 60%;
-        background-color: transparent;
-        border: none;
-        &::placeholder{
-            color: $white;
-        }
-        &:focus{
-            color: $white;
-        }
-        &.show{
-            margin-left: 15px;
-            &::placeholder{
-                color:rgba(250, 235, 215, 0.424)            
-            }
-        }
-    }
+    @include listContainer;
 }
+
 .ustensiles{
     background-color: $orange;
-    color: $white;
-    &__list{
-        font-size: 0.7rem;
-        column-count: 7;
-        column-gap: 1.5rem;
-        >ul.list{
-            list-style: none;
-           >li{
-               cursor: pointer;
-               &:hover{
-                   color: $grey;
-               }
-           }
-        }
-        &.onSearch{
-           column-count: 1;
-        }
-       }
-    &__searchBar{
-        width: 60%;
-        background-color: transparent;
-        border: none;
-        &::placeholder{
-            color: $white;
-        }
-        &:focus{
-            color: $white;
-        }
-        &.show{
-            margin-left: 15px;
-            &::placeholder{
-                color:rgba(250, 235, 215, 0.424)            
-            }
-        }
-    }
+    @include listContainer;
 }
 
 #ingredients__iconBtn{

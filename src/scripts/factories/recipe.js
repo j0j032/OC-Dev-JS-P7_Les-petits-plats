@@ -2,6 +2,11 @@ const dom = require('../components/dom')
 
 module.exports = {
 
+  /**
+   * FACTORY TO GET RECIPE CARD
+   * @param {Object} data
+   * @returns Recipe Card
+   */
   createRecipeCard (data) {
     const { name, description, ingredients, time } = data
     const clock = '/src/assets/images/clock.svg'
@@ -22,6 +27,7 @@ module.exports = {
     const spanLiAttributes = [{ class: 'recipe-card__ingdts--span' }]
     const pLiAttributes = [{ class: 'recipe-card__ingdts--p' }]
 
+    // to create every card elements
     const getRecipeCardDOM = () => {
       const card = dom.createElement('div', cardAttributes, null, null)
       dom.createElement('div', imgAttributes, card, null)
@@ -35,6 +41,7 @@ module.exports = {
       const ingredientList = dom.createElement('ul', ingdtListAttributes, subHeadingContainer, null)
       dom.createElement('p', descsAttributes, subHeadingContainer, description)
 
+      // to create ingredient list in recipe card
       const getIngredientCardList = () => {
         for (let i = 0; i < ingredients.length; i++) {
           let ingrdtDOM
