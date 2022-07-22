@@ -1,0 +1,38 @@
+@mixin listContainer{
+    color: $white;
+    &__list{
+        font-size: 0.7rem;
+        column-count: 3;
+        column-gap: 1rem;
+        >ul.list{
+            list-style: none;
+           >li{
+            margin-bottom: 5px;
+               cursor: pointer;
+               &:hover{
+                   color: $grey;
+               }
+           }
+        }
+        &.onSearch{
+           column-count: 1;
+        }
+       }
+    &__searchBar{
+        width: 60%;
+        background-color: transparent;
+        border: none;
+        &::placeholder{
+            color: $white;
+        }
+        &:focus{
+            color: $white;
+        }
+        &.show{
+            margin-left: 10px;
+            &::placeholder{
+                color:rgba(250, 235, 215, 0.424)            
+            }
+        }
+    }
+}
