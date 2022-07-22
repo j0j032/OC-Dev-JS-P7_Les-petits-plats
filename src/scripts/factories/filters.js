@@ -96,13 +96,13 @@ module.exports = {
         hideList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'Ustensiles')
         hideList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'Appareils')
         domLinker.appareilsClosedBtn.classList.add('adapt__app--toIng')
-      } 
+      }
       if (domLinker.appareilsList.classList.contains('show')) {
         hideList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'Ustensiles')
         hideList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'Ingrédients')
         domLinker.appareilsClosedBtn.classList.add('adapt__app--toSelf')
         domLinker.ustensilesClosedBtn.classList.add('adapt__ust--toApp')
-      } 
+      }
       if (domLinker.ustensilesList.classList.contains('show')) {
         hideList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'Appareils')
         hideList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'Ingrédients')
