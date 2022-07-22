@@ -35,6 +35,7 @@
 
 .filters-container{
     width: fit-content;
+    height: 80px;
     display: flex;
     justify-content: space-between;
     gap: 20px;
@@ -68,125 +69,55 @@
     display: none;
 }
 .absolute{
-    position: absolute;
+    position:absolute;
     z-index: 3;
+    padding-left: 1rem;
     padding-right: 1.9rem;
     padding-bottom: 1.9rem;
 }
 
+.adapt{
+    &__app{
+        &--toIng{
+            margin-left: 300px;
+        }
+        &--toSelf{ 
+            margin-left: 243px;
+            width: 360px;
+        }
+    }
+    &__ust{
+        &--toApp{
+            transform: translateX(380px);
+        }
+        &--toSelf{
+            transform: translateX(486px);
+            width: 400px
+        }
+    }
+}
+
 .ingredients{
     background-color: $blue;
-    color: $white;
+    @include listContainer;
     &__list{
-        font-size: 0.7rem;
         column-count: 7;
-        column-gap: 1.5rem;
-        >ul.list{
-            list-style: none;
-           >li{
-               cursor: pointer;
-               &:hover{
-                   color: $grey;
-               }
-               margin-bottom: 7px;
-           }
-        }
-        &.onSearch{
-           column-count: 1;
-        }
-       }
-    &__searchBar{
-        width: 60%;
-        background-color: transparent;
-        border: none;
-        &::placeholder{
-            color: $white;
-        }
-        &:focus{
-            color: $white;
-        }
-        &.show{
-            margin-left: 15px;
-            &::placeholder{
-                color:rgba(250, 235, 215, 0.424)            
-            }
-        }
     }
 }
+
 .appareils{
     background-color: $green;
-    color: $white;
+    @include listContainer;
     &__list{
-        font-size: 0.7rem;
-        column-count: 7;
-        column-gap: 1.5rem;
-        >ul.list{
-            list-style: none;
-           >li{
-               cursor: pointer;
-               &:hover{
-                   color: $grey;
-               }
-           }
-        }
-        &.onSearch{
-           column-count: 1;
-        }
-       }
-    &__searchBar{
-        width: 60%;
-        background-color: transparent;
-        border: none;
-        &::placeholder{
-            color: $white;
-        }
-        &:focus{
-            color: $white;
-        }
-        &.show{
-            margin-left: 15px;
-            &::placeholder{
-                color:rgba(250, 235, 215, 0.424)            
-            }
-        }
+        column-count: 1;
     }
 }
+
 .ustensiles{
     background-color: $orange;
-    color: $white;
+    @include listContainer;
     &__list{
-        font-size: 0.7rem;
-        column-count: 7;
-        column-gap: 1.5rem;
-        >ul.list{
-            list-style: none;
-           >li{
-               cursor: pointer;
-               &:hover{
-                   color: $grey;
-               }
-           }
-        }
-        &.onSearch{
-           column-count: 1;
-        }
-       }
-    &__searchBar{
-        width: 60%;
-        background-color: transparent;
-        border: none;
-        &::placeholder{
-            color: $white;
-        }
-        &:focus{
-            color: $white;
-        }
-        &.show{
-            margin-left: 15px;
-            &::placeholder{
-                color:rgba(250, 235, 215, 0.424)            
-            }
-        }
+        column-count: 2;
     }
 }
 
