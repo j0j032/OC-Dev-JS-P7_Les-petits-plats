@@ -36,8 +36,8 @@
 .filters-container{
     width: fit-content;
     height: 80px;
-    /* display: flex;
-    justify-content: space-between; */
+    display: flex;
+    justify-content: space-between;
     gap: 20px;
     position: relative;
 }
@@ -75,25 +75,25 @@
     padding-right: 1.9rem;
     padding-bottom: 1.9rem;
 }
-.filter.ingredients{
-    position: absolute;
-    left: 0px;
-    &.absolute{
-        left: 0px;
+
+.adapt{
+    &__app{
+        &--toIng{
+            margin-left: 300px;
+        }
+        &--toSelf{ 
+            margin-left: 243px;
+            width: 360px;
+        }
     }
-}
-.filter.appareils{
-    position: absolute;
-    left: 190px;
-    &.absolute{
-        left: 190px;
-    }
-}
-.filter.ustensiles{
-    position: absolute;
-    left: 380px;
-    &.absolute{
-        left: 380px;
+    &__ust{
+        &--toApp{
+            transform: translateX(380px);
+        }
+        &--toSelf{
+            transform: translateX(486px);
+            width: 400px
+        }
     }
 }
 
@@ -108,11 +108,17 @@
 .appareils{
     background-color: $green;
     @include listContainer;
+    &__list{
+        column-count: 1;
+    }
 }
 
 .ustensiles{
     background-color: $orange;
     @include listContainer;
+    &__list{
+        column-count: 2;
+    }
 }
 
 #ingredients__iconBtn{

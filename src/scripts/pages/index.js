@@ -5,9 +5,9 @@ const state = require('../components/state')
 const { isIncluded, isFound, noResult, emptyDOM } = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const { createRecipeCard } = require('../factories/recipe')
-const { createFiltersList } = require('../factories/filters')
+const { createFilters } = require('../factories/filters')
 const { resultsContainer, ingredientsSearchBar, appareilsSearchBar, ustensilesSearchBar, ingredientsIconBtn, ustensilesIconBtn, appareilsIconBtn, ingredientsList, ustensilesList, appareilsList } = require('../components/domLinker')
-const filterModel = createFiltersList()
+const filterModel = createFilters()
 
 /**
  * Log Data in console (to code)

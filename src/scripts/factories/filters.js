@@ -5,7 +5,7 @@ const { createRecipeCard } = require('./recipe')
 
 module.exports = {
 
-  createFiltersList () {
+  createFilters () {
     /**
      * TO GET ALL INGREDIENTS
      * @param {Object} data getData from recipes.json
@@ -91,6 +91,35 @@ module.exports = {
       createFilterListDOM(state.allUstensils, domLinker.ustensilesList, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li')
     }
 
+    const filterBtnPositionShown = () => {
+      if (domLinker.ingredientsList.classList.contains('show')) {
+        hideList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'Ustensiles')
+        hideList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'Appareils')
+        domLinker.appareilsClosedBtn.classList.add('adapt__app--toIng')
+      } 
+      if (domLinker.appareilsList.classList.contains('show')) {
+        hideList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'Ustensiles')
+        hideList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'Ingrédients')
+        domLinker.appareilsClosedBtn.classList.add('adapt__app--toSelf')
+        domLinker.ustensilesClosedBtn.classList.add('adapt__ust--toApp')
+      } 
+      if (domLinker.ustensilesList.classList.contains('show')) {
+        hideList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'Appareils')
+        hideList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'Ingrédients')
+        domLinker.ustensilesClosedBtn.classList.add('adapt__ust--toSelf')
+      }
+    }
+    const filterBtnPositionHidden = () => {
+      if (domLinker.appareilsClosedBtn.classList.contains('adapt__app--toIng')) {
+        domLinker.appareilsClosedBtn.classList.remove('adapt__app--toIng')
+      } else if (domLinker.appareilsClosedBtn.classList.contains('adapt__app--toSelf')) {
+        domLinker.appareilsClosedBtn.classList.remove('adapt__app--toSelf')
+        domLinker.ustensilesClosedBtn.classList.remove('adapt__ust--toApp')
+      } else if (domLinker.ustensilesClosedBtn.classList.contains('adapt__ust--toSelf')) {
+        domLinker.ustensilesClosedBtn.classList.remove('adapt__ust--toSelf')
+      }
+    }
+
     // THE 3 FOLLOWING ARE TO TOGGLE DISPLAY FILTERLIST
     /**
      * DISPLAY
@@ -103,6 +132,7 @@ module.exports = {
     const displayList = (btn, list, container, placeHolder, textSearch) => {
       btn.style.transform = 'rotate(180deg)'
       list.classList.add('show')
+      filterBtnPositionShown()
       list.classList.remove('hidden')
       container.classList.add('absolute')
       placeHolder.classList.add('show')
@@ -121,6 +151,7 @@ module.exports = {
     const hideList = (btn, list, container, placeHolder, textDefault) => {
       btn.style.transform = 'rotate(0deg)'
       list.classList.remove('show')
+      filterBtnPositionHidden()
       list.classList.add('hidden')
       list.classList.remove('onSearch')
       container.classList.remove('absolute')
@@ -136,6 +167,19 @@ module.exports = {
       } else {
         hideList(btn, list, container, placeHolder, textDefault)
       }
+    }
+
+    /**
+     * TO SET TAG EVENT LISTENER TO FILTERLIST ITEM WHEN CREATE
+     * @param {array} tagList to fill an array of tag when user select an item in the list
+     * object tags in state.js = tags.ingredient, tags.appliance, tags.ustensil
+     * @param {array} filterBtns to set every list item as an html node
+     * list in state.js = tagIngList, tagAppList, tagUstList
+     * @param {HTML el} selector to select each item as a btn and select and set a tag
+     */
+    const tagEvent = (tagList, filterBtns, selector) => {
+      filterBtns = document.querySelectorAll(selector)
+      filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText, e.target)) })
     }
 
     /**
@@ -271,18 +315,6 @@ module.exports = {
       }
     }
 
-    /**
-     * TO SET TAG EVENT LISTENER TO FILTERLIST ITEM WHEN CREATE
-     * @param {array} tagList to fill an array of tag when user select an item in the list
-     * object tags in state.js = tags.ingredient, tags.appliance, tags.ustensil
-     * @param {array} filterBtns to set every list item as an html node
-     * list in state.js = tagIngList, tagAppList, tagUstList
-     * @param {HTML el} selector to select each item as a btn and select and set a tag
-     */
-    const tagEvent = (tagList, filterBtns, selector) => {
-      filterBtns = document.querySelectorAll(selector)
-      filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText, e.target)) })
-    }
     /**
      * TO ADD EVENT LISTENER ON TAG'S CLOSE ICON
      */
