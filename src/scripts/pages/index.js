@@ -136,9 +136,10 @@ window.onload = displayAllRecipes()
  */
 const mainSearchBar = (inputValue) => {
   if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
-    state.allRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
-    displayRecipe(state.allRecipes)
-    if (state.allRecipes.length <= 0) {
+    const searchRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
+    displayRecipe(searchRecipes)
+    console.log('SearchRecipes: ', searchRecipes)
+    if (searchRecipes.length <= 0) {
       noResult(resultsContainer)
     }
   } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
