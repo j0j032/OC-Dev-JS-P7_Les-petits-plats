@@ -7,15 +7,46 @@ module.exports = {
 
   createFilters () {
     /**
+     * TO CREATE EACH LIST OF FILTER ITEMS
+     * @param {array} arr = list of filter items
+     * @param {HTML el} parent = container to fill
+
+     * THE FOLLOWING CONCERN tagEvent
+     * @param {array} tagList to fill an array of tag when user select an item in the list
+     * object tags in state.js = tags.ingredient, tags.appliance, tags.ustensil
+     * @param {array} filterBtns to set every list item as an html node
+     * list in state.js = tagIngList, tagAppList, tagUstList
+     * @param {HTML el} selector to select each item as a btn and select and set a tag
+     */
+    const createFilterListDOM = (arr, parent, tagList, filterBtns, selector) => {
+      const listAttributes = [{ class: 'list' }]
+      const list = createElement('ul', listAttributes, parent, null)
+      arr.forEach(el => {
+        createElement('li', listAttributes, list, el)
+      })
+      tagEvent(tagList, filterBtns, selector)
+    }
+    /**
      * TO GET ALL INGREDIENTS
      * @param {Object} data getData from recipes.json
      * @param {array} newArr array of ingredients
      */
-    const getIngredientList = (data, newArr) => {
+    const getRecipeIngredients = (data) => {
       const { ingredients } = data
       for (const item of ingredients) {
-        newArr.push(item.ingredient)
+        state.allIngredients.push(item.ingredient)
       }
+    }
+    /**
+     * TO DISPLAY INGREDIENT FILTER LIST
+     * @param {Object} data getData from recipes.json
+     */
+    const getAllIngredients = (data) => {
+      data.forEach(recipe => {
+        getRecipeIngredients(recipe)
+      })
+      state.allIngredients = [...new Set(state.allIngredients)]
+      console.log('AllIng: ', state.allIngredients)
     }
     /**
      * TO GET ALL APPLIANCE
@@ -37,39 +68,6 @@ module.exports = {
       ustensils.forEach(el => {
         newArr.push(el)
       })
-    }
-    /**
-     * TO CREATE EACH LIST OF FILTER ITEMS
-     * @param {array} arr = list of filter items
-     * @param {HTML el} parent = container to fill
-
-     * THE FOLLOWING CONCERN tagEvent
-     * @param {array} tagList to fill an array of tag when user select an item in the list
-     * object tags in state.js = tags.ingredient, tags.appliance, tags.ustensil
-     * @param {array} filterBtns to set every list item as an html node
-     * list in state.js = tagIngList, tagAppList, tagUstList
-     * @param {HTML el} selector to select each item as a btn and select and set a tag
-     */
-    const createFilterListDOM = (arr, parent, tagList, filterBtns, selector) => {
-      const listAttributes = [{ class: 'list' }]
-      const list = createElement('ul', listAttributes, parent, null)
-      arr.forEach(el => {
-        createElement('li', listAttributes, list, el)
-      })
-      tagEvent(tagList, filterBtns, selector)
-    }
-
-    /**
-     * TO DISPLAY INGREDIENT FILTER LIST
-     * @param {Object} data getData from recipes.json
-     */
-    const displayIngredientList = (data) => {
-      data.forEach(recipe => {
-        getIngredientList(recipe, state.allIngredients)
-      })
-      state.allIngredients = [...new Set(state.allIngredients)]
-      createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
-      console.log(state.allIngredients)
     }
     /**
      * TO DISPLAY APPLIANCE FILTER LIST
@@ -140,7 +138,7 @@ module.exports = {
       placeHolder.removeAttribute('disabled')
       placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
       placeHolder.focus()
-      displayIngredientList(state.searchRecipes)
+      getAllIngredients(state.searchRecipes)
     }
     /**
      * HIDE
@@ -325,6 +323,6 @@ module.exports = {
       removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e)) })
     }
 
-    return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList, createTag }
+    return { createFilterListDOM, getAllIngredients, displayAppareilsList, displayUstensilsList, toggleList, createTag }
   }
 }

@@ -19,28 +19,9 @@ const logRecipes = async () => {
 window.onload = logRecipes()
 
 /**
- * Display every filterList
- */
-/* const displayAllFiltersList = async () => {
-  const recipes = await api.getRecipes()
-  filterModel.displayIngredientList(recipes)
-  filterModel.displayAppareilsList(recipes)
-  filterModel.displayUstensilsList(recipes)
-}
-window.onload = displayAllFiltersList() */
-
-/**
  * Display each filter list for search input
  */
-const displayIngList = () => {
-  if (state.searchRecipes.length === 0) {
-    filterModel.displayIngredientList(state.allRecipes)
-    console.log('SearchBar empty')
-  } else if (state.searchRecipes.length > 0) {
-    filterModel.displayIngredientList(state.searchRecipes)
-    console.log('SearchBar filled')
-  }
-}
+
 const displayAppList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayAppareilsList(recipes)
@@ -133,6 +114,12 @@ const displayAllRecipes = async () => {
 }
 window.onload = displayAllRecipes()
 
+const displayIngList = (data) => {
+  emptyDOM(ingredientsList)
+  filterModel.getAllIngredients(data)
+  filterModel.createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
+  state.allIngredients = []
+}
 /**
  * TO SEARCH RECIPE IN MAIN SEARCH BAR
  * @param {string} inputValue = user research
@@ -143,11 +130,10 @@ const mainSearchBar = (inputValue) => {
   if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
     state.searchRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
     displayRecipe(state.searchRecipes)
-    emptyDOM(ingredientsList)
-    console.log('SearchRecipes: ', state.searchRecipes)
     displayIngList(state.searchRecipes)
     if (state.searchRecipes.length <= 0) {
-      noResult(resultsContainer)
+      noResult(resultsContainer, 'Aucune recette ne correspond à votre recherche')
+      noResult(ingredientsList, 'Aucun filtre')
     }
   } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
     console.log('NewResult', state.newResult)
@@ -155,7 +141,7 @@ const mainSearchBar = (inputValue) => {
     displayRecipe(finalResult)
     console.log('finalResult', finalResult)
     if (finalResult.length === 0) {
-      noResult(resultsContainer)
+      noResult(resultsContainer, 'Aucune recette ne correspond à votre recherche')
     }
   }
 }
