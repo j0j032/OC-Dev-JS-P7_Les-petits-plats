@@ -69,6 +69,7 @@ module.exports = {
       })
       state.allIngredients = [...new Set(state.allIngredients)]
       createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
+      console.log(state.allIngredients)
     }
     /**
      * TO DISPLAY APPLIANCE FILTER LIST
@@ -139,6 +140,7 @@ module.exports = {
       placeHolder.removeAttribute('disabled')
       placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
       placeHolder.focus()
+      displayIngredientList(state.searchRecipes)
     }
     /**
      * HIDE

@@ -21,20 +21,25 @@ window.onload = logRecipes()
 /**
  * Display every filterList
  */
-const displayAllFiltersList = async () => {
+/* const displayAllFiltersList = async () => {
   const recipes = await api.getRecipes()
   filterModel.displayIngredientList(recipes)
   filterModel.displayAppareilsList(recipes)
   filterModel.displayUstensilsList(recipes)
 }
-window.onload = displayAllFiltersList()
+window.onload = displayAllFiltersList() */
 
 /**
  * Display each filter list for search input
  */
-const displayIngList = async () => {
-  const recipes = await api.getRecipes()
-  filterModel.displayIngredientList(recipes)
+const displayIngList = () => {
+  if (state.searchRecipes.length === 0) {
+    filterModel.displayIngredientList(state.allRecipes)
+    console.log('SearchBar empty')
+  } else if (state.searchRecipes.length > 0) {
+    filterModel.displayIngredientList(state.searchRecipes)
+    console.log('SearchBar filled')
+  }
 }
 const displayAppList = async () => {
   const recipes = await api.getRecipes()
@@ -136,10 +141,12 @@ window.onload = displayAllRecipes()
  */
 const mainSearchBar = (inputValue) => {
   if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
-    const searchRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
-    displayRecipe(searchRecipes)
-    console.log('SearchRecipes: ', searchRecipes)
-    if (searchRecipes.length <= 0) {
+    state.searchRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
+    displayRecipe(state.searchRecipes)
+    emptyDOM(ingredientsList)
+    console.log('SearchRecipes: ', state.searchRecipes)
+    displayIngList(state.searchRecipes)
+    if (state.searchRecipes.length <= 0) {
       noResult(resultsContainer)
     }
   } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
