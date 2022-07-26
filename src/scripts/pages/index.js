@@ -6,7 +6,7 @@ const { isIncluded, isFound, noResult, emptyDOM } = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const { createRecipeCard } = require('../factories/recipe')
 const { createFilters } = require('../factories/filters')
-const { resultsContainer, ingredientsSearchBar, appareilsSearchBar, ustensilesSearchBar, ingredientsIconBtn, ustensilesIconBtn, appareilsIconBtn, ingredientsList, ustensilesList, appareilsList } = require('../components/domLinker')
+const { resultsContainer, ingredientsSearchBar, appareilsSearchBar, ustensilesSearchBar, ingredientsIconBtn, ustensilesIconBtn, appareilsIconBtn, ingredientsList, ustensilesList, appareilsList, searchBar } = require('../components/domLinker')
 const filterModel = createFilters()
 
 /**
@@ -21,14 +21,24 @@ window.onload = logRecipes()
 /**
  * Display each filter list for search input
  */
-
-const displayAppList = async () => {
-  const recipes = await api.getRecipes()
-  filterModel.displayAppareilsList(recipes)
+const displayIngList = (data) => {
+  emptyDOM(ingredientsList)
+  filterModel.getAllIngredients(data)
+  filterModel.createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
+  state.allIngredients = []
 }
-const displayUstList = async () => {
-  const recipes = await api.getRecipes()
-  filterModel.displayUstensilsList(recipes)
+
+const displayAppList = (data) => {
+  emptyDOM(appareilsList)
+  filterModel.getAppareilsList(data)
+  filterModel.createFilterListDOM(state.allAppareils, domLinker.appareilsList, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li')
+  state.allAppareils = []
+}
+const displayUstList = (data) => {
+  emptyDOM(ustensilesList)
+  filterModel.getUstensilsList(data)
+  filterModel.createFilterListDOM(state.allUstensils, domLinker.ustensilesList, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li')
+  state.allUstensils = []
 }
 
 /**
@@ -79,9 +89,32 @@ const filterSearch = (inputValue, array, container, inpuTarget, tagList, filterB
 /**
  * ALL EVENTS TO OPEN THE FILTER LISTS CONTAINER
  */
-ingredientsIconBtn.addEventListener('click', () => filterModel.toggleList(ingredientsIconBtn, ingredientsList, domLinker.ingredients, ingredientsSearchBar, 'ingrédient', 'Ingrédients'))
-ustensilesIconBtn.addEventListener('click', () => filterModel.toggleList(ustensilesIconBtn, ustensilesList, domLinker.ustensiles, ustensilesSearchBar, 'ustensile', 'Ustensiles'))
-appareilsIconBtn.addEventListener('click', () => filterModel.toggleList(appareilsIconBtn, appareilsList, domLinker.appareils, appareilsSearchBar, 'appareil', 'Appareils'))
+ingredientsIconBtn.addEventListener('click', () => {
+  filterModel.toggleList(ingredientsIconBtn, ingredientsList, domLinker.ingredients, ingredientsSearchBar, 'ingrédient', 'Ingrédients') 
+  if (searchBar.value.length < 3) {
+    displayIngList(state.allRecipes)
+  } else {
+    displayIngList(state.searchRecipes)
+  }
+})
+
+ustensilesIconBtn.addEventListener('click', () => {
+  filterModel.toggleList(ustensilesIconBtn, ustensilesList, domLinker.ustensiles, ustensilesSearchBar, 'ustensile', 'Ustensiles')
+  if (searchBar.value.length < 3) {
+    displayUstList(state.allRecipes)
+  } else {
+    displayUstList(state.searchRecipes)
+  }
+})
+
+appareilsIconBtn.addEventListener('click', () => {
+  filterModel.toggleList(appareilsIconBtn, appareilsList, domLinker.appareils, appareilsSearchBar, 'appareil', 'Appareils')
+  if (searchBar.value.length < 3) {
+    displayAppList(state.allRecipes)
+  } else {
+    displayAppList(state.searchRecipes)
+  }
+})
 
 /**
  * ALL EVENTS TO SEARCH AN ITEM IN FILTER LIST
@@ -114,12 +147,6 @@ const displayAllRecipes = async () => {
 }
 window.onload = displayAllRecipes()
 
-const displayIngList = (data) => {
-  emptyDOM(ingredientsList)
-  filterModel.getAllIngredients(data)
-  filterModel.createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
-  state.allIngredients = []
-}
 /**
  * TO SEARCH RECIPE IN MAIN SEARCH BAR
  * @param {string} inputValue = user research
@@ -131,6 +158,9 @@ const mainSearchBar = (inputValue) => {
     state.searchRecipes = state.allRecipes.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
     displayRecipe(state.searchRecipes)
     displayIngList(state.searchRecipes)
+    displayAppList(state.searchRecipes)
+    displayUstList(state.searchRecipes)
+    // displayBackLists()
     if (state.searchRecipes.length <= 0) {
       noResult(resultsContainer, 'Aucune recette ne correspond à votre recherche')
       noResult(ingredientsList, 'Aucun filtre')
@@ -145,6 +175,14 @@ const mainSearchBar = (inputValue) => {
     }
   }
 }
+
+/* const displayBackLists = () => {
+  if (searchBar.value.length < 3) {
+    displayIngList(state.allRecipes)
+    displayAppList(state.allRecipes)
+    displayUstList(state.allRecipes)
+  }
+} */
 
 /**
  * MAIN SEARCH BAR EVENT
