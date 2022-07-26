@@ -8,7 +8,7 @@ module.exports = {
   ingredientsIconBtn: document.getElementById('ingredients__iconBtn'),
   ingredientsList: document.querySelector('.ingredients__list'),
   ingredientsListUl: document.querySelector('.ingredients__list > ul'),
-  ingredientsSearchBar: document.querySelector('.ingredients__searchBar'),
+  ingredientsSearchBar: document.getElementById('ingredients__searchBar'),
   ingredientClosedBtn: document.querySelector('.filter.ingredients'),
 
   ustensiles: document.querySelector('.ustensiles'),
@@ -26,5 +26,6 @@ module.exports = {
   appareilsClosedBtn: document.querySelector('.filter.appareils'),
 
   arrowIcon: document.querySelectorAll('.filter__btn > span'),
-  tagsContainer: document.querySelector('.tags')
+  tagsContainer: document.querySelector('.tags'),
+  filterInputs: document.querySelectorAll('.filter-search')
 }

@@ -56,7 +56,6 @@ module.exports = {
       })
       state.allAppareils = [...new Set(state.allAppareils)]
     }
-
     /**
     /**
      * * TO GET USTENSILS FROM EACH RECIPES
