@@ -23,6 +23,10 @@ const emptyDOM = el => {
   }
 }
 
+const noResult = (container, text) => {
+  container.textContent = text
+}
+
 // THE 3 FOLLOWING ARE TO TOGGLE DISPLAY FILTERLIST
 /**
      * DISPLAY
@@ -71,5 +75,5 @@ const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) 
 }
 
 module.exports = {
-  createElement, emptyDOM, toggleList
+  createElement, emptyDOM, toggleList, noResult
 }
