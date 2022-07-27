@@ -7,38 +7,6 @@ module.exports = {
 
   createFilters () {
     /**
-     * TO GET ALL INGREDIENTS
-     * @param {Object} data getData from recipes.json
-     * @param {array} newArr array of ingredients
-     */
-    const getIngredientList = (data, newArr) => {
-      const { ingredients } = data
-      for (const item of ingredients) {
-        newArr.push(item.ingredient)
-      }
-    }
-    /**
-     * TO GET ALL APPLIANCE
-     * @param {Object} data getData from recipes.json
-     * @param {array} newArr array of appliances
-     */
-    const getAppareilsList = (data, newArr) => {
-      data.forEach(el => {
-        newArr.push(el.appliance)
-      })
-    }
-    /**
-     * TO GET ALL USTENSILS
-     * @param {Object} data getData from recipes.json
-     * @param {array} newArr array of ustensils
-     */
-    const getUstensilesList = (data, newArr) => {
-      const { ustensils } = data
-      ustensils.forEach(el => {
-        newArr.push(el)
-      })
-    }
-    /**
      * TO CREATE EACH LIST OF FILTER ITEMS
      * @param {array} arr = list of filter items
      * @param {HTML el} parent = container to fill
@@ -58,37 +26,56 @@ module.exports = {
       })
       tagEvent(tagList, filterBtns, selector)
     }
-
     /**
-     * TO DISPLAY INGREDIENT FILTER LIST
-     * @param {Object} data getData from recipes.json
+     * TO GET INGREDIENTS FROM EACH RECIPES
+     * @param {Object} data
      */
-    const displayIngredientList = (data) => {
+    const getRecipeIngredients = (data) => {
+      const { ingredients } = data
+      for (const item of ingredients) {
+        state.allIngredients.push(item.ingredient)
+      }
+    }
+    /**
+     * TO GET AN ARRAY OF ALL INGREDIENTS
+     * @param {Object} data
+     */
+    const getAllIngredients = (data) => {
       data.forEach(recipe => {
-        getIngredientList(recipe, state.allIngredients)
+        getRecipeIngredients(recipe)
       })
       state.allIngredients = [...new Set(state.allIngredients)]
-      createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
     }
     /**
-     * TO DISPLAY APPLIANCE FILTER LIST
-     * @param {Object} data getData from recipes.json
+     * TO GET AN ARRAY OF ALL APPLIANCE
+     * @param {Object} data to get an array of all appliance
      */
-    const displayAppareilsList = (data) => {
-      getAppareilsList(data, state.allAppareils)
+    const getAppareilsList = (data) => {
+      data.forEach(el => {
+        state.allAppareils.push(el.appliance)
+      })
       state.allAppareils = [...new Set(state.allAppareils)]
-      createFilterListDOM(state.allAppareils, domLinker.appareilsList, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li')
     }
     /**
-     * TO DISPLAY USTENSIL FILTER LIST
-     * @param {Object} data getData from recipes.json
+    /**
+     * * TO GET USTENSILS FROM EACH RECIPES
+     * @param {Object} data to get ustensils from each recipes
      */
-    const displayUstensilsList = (data) => {
+    const getRecipeUstensils = (data) => {
+      const { ustensils } = data
+      ustensils.forEach(el => {
+        state.allUstensils.push(el)
+      })
+    }
+    /**
+     * TO GET AN ARRAY OF ALL USTENSILS
+     * @param {Object} data
+     */
+    const getUstensilsList = (data) => {
       data.forEach(recipe => {
-        getUstensilesList(recipe, state.allUstensils)
+        getRecipeUstensils(recipe)
       })
       state.allUstensils = [...new Set(state.allUstensils)]
-      createFilterListDOM(state.allUstensils, domLinker.ustensilesList, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li')
     }
 
     const filterBtnPositionShown = () => {
@@ -179,7 +166,11 @@ module.exports = {
      */
     const tagEvent = (tagList, filterBtns, selector) => {
       filterBtns = document.querySelectorAll(selector)
-      filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText, e.target)) })
+      filterBtns.forEach(el => {
+        el.addEventListener('click', (e) => {
+          getTag(tagList, e.target.outerText, e.target)
+        })
+      })
     }
 
     /**
@@ -198,6 +189,7 @@ module.exports = {
      * @param {string} category = to set class attribute in function of tag category
      */
     const createTag = (value, category) => {
+      console.log('create', value)
       const tagAttribute = [{ class: category }]
       const closeAttribute = [{ class: 'tag__close bi bi-x-circle' }]
       const tag = createElement('span', tagAttribute, domLinker.tagsContainer, value)
@@ -323,6 +315,6 @@ module.exports = {
       removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e)) })
     }
 
-    return { createFilterListDOM, displayIngredientList, displayAppareilsList, displayUstensilsList, toggleList, createTag }
+    return { createFilterListDOM, getAllIngredients, getAppareilsList, getUstensilsList, toggleList, createTag }
   }
 }
