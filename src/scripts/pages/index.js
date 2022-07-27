@@ -25,7 +25,7 @@ const displayIngList = (data) => {
   emptyDOM(ingredientsList)
   filterModel.getAllIngredients(data)
   filterModel.createFilterListDOM(state.allIngredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
-  state.allIngredients = []
+  // state.allIngredients = []
 }
 
 const displayAppList = (data) => {
@@ -51,7 +51,7 @@ const tagSearch = (arr, value, container, tagList, btnList, selector) => {
   arr = arr.filter(item => isIncluded(item, value))
   emptyDOM(container)
   filterModel.createFilterListDOM(arr, container, tagList, btnList, selector)
-  if (value.length >= 3 && arr.length === 0) {
+  if (value.length >= 2 && arr.length === 0) {
     container.textContent = 'Aucun filtre'
   }
 }
@@ -64,7 +64,7 @@ const filtersSearch = () => {
         case 'ingredients__searchBar':
           searchBar.value.length < 3 ? filterModel.getAllIngredients(state.allRecipes) : filterModel.getAllIngredients(state.searchRecipes)
           tagSearch(state.allIngredients, inputValue, ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
-          state.allIngredients = []
+          // state.allIngredients = []
           break
         case 'appareils__searchBar':
           searchBar.value.length < 3 ? filterModel.getAppareilsList(state.allRecipes) : filterModel.getAppareilsList(state.searchRecipes)
@@ -86,7 +86,25 @@ const filtersSearch = () => {
  */
 ingredientsIconBtn.addEventListener('click', () => {
   filterModel.toggleList(ingredientsIconBtn, ingredientsList, domLinker.ingredients, ingredientsSearchBar, 'ingrédient', 'Ingrédients') 
-  searchBar.value.length < 3 ? displayIngList(state.allRecipes) : displayIngList(state.searchRecipes)
+  if (searchBar.value.length < 3 && state.tags.ingredient.length === 0) {
+    console.log('pas de tag pas de RP')
+    displayIngList(state.allRecipes)
+    console.log(state.allIngredients)
+  } else if (searchBar.value.length >= 3 && state.tags.ingredient.length === 0) {
+    console.log('pas de tag mais RP')
+    displayIngList(state.searchRecipes)
+    console.log(state.allIngredients)
+  } else if (state.tags.ingredient.length !== 0 && searchBar.value.length <= 2) {
+    console.log('il y a un tag mais pas de RP')
+    state.allIngredients = []
+    displayIngList(state.newResult)
+    console.log(state.allIngredients)
+  } else if (searchBar.value.length >= 3 && state.tags.ingredient.length !== 0) {
+    console.log('il y a un tag et RP')
+    console.log('TEST', state.finalResult)
+    displayIngList(state.finalResult)
+    console.log(state.allIngredients)
+  }
   filtersSearch()
 })
 
@@ -145,10 +163,10 @@ const mainSearchBar = (inputValue) => {
     }
   } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
     console.log('NewResult', state.newResult)
-    const finalResult = state.newResult.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
-    displayRecipe(finalResult)
-    console.log('finalResult', finalResult)
-    if (finalResult.length === 0) {
+    state.finalResult = state.newResult.filter(recipe => isIncluded(recipe.name, inputValue) || isIncluded(recipe.description, inputValue) || isFound(recipe.ingredients, 'ingredient', inputValue))
+    displayRecipe(state.finalResult)
+    console.log('finalResult', state.finalResult)
+    if (state.finalResult.length === 0) {
       noResult(resultsContainer, 'Aucune recette ne correspond à votre recherche')
     }
   }
@@ -171,6 +189,7 @@ domLinker.searchBar.addEventListener('input', e => {
   } else {
     emptyDOM(resultsContainer)
     displayAllLists(state.allRecipes)
+    state.allIngredients = []
     if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
       displayAllRecipes()
     } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {

@@ -2,6 +2,7 @@ module.exports = {
   allRecipes: [], // All from API
   searchRecipes: [], // All filterd recipes by mainBar
   newResult: [], // Update fromFilters
+  finalResult: [],
   allIngredients: [], // List
   allAppareils: [], // List
   allUstensils: [], // List

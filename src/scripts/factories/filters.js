@@ -166,7 +166,11 @@ module.exports = {
      */
     const tagEvent = (tagList, filterBtns, selector) => {
       filterBtns = document.querySelectorAll(selector)
-      filterBtns.forEach(el => { el.addEventListener('click', (e) => getTag(tagList, e.target.outerText, e.target)) })
+      filterBtns.forEach(el => {
+        el.addEventListener('click', (e) => {
+          getTag(tagList, e.target.outerText, e.target)
+        })
+      })
     }
 
     /**
@@ -185,6 +189,7 @@ module.exports = {
      * @param {string} category = to set class attribute in function of tag category
      */
     const createTag = (value, category) => {
+      console.log('create', value)
       const tagAttribute = [{ class: category }]
       const closeAttribute = [{ class: 'tag__close bi bi-x-circle' }]
       const tag = createElement('span', tagAttribute, domLinker.tagsContainer, value)
