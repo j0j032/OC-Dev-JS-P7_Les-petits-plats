@@ -1,6 +1,7 @@
 /* eslint-disable no-trailing-spaces */
 /* eslint-disable no-unused-expressions */
 const api = require('../components/api')
+const { isIncluded } = require('../components/search')
 const state = require('../components/state')
 const { emptyDOM, toggleList, noResult } = require('../components/dom')
 const domLinker = require('../components/domLinker')
@@ -79,6 +80,7 @@ domLinker.ingredientsIconBtn.addEventListener('click', () => {
   if (domLinker.searchBar.value.length >= 3 && state.newResult.length === 0) {
     noResult(domLinker.ingredientsList, 'Aucun résultat')
   }
+  filtersSearch()
 })
 
 domLinker.ustensilesIconBtn.addEventListener('click', () => {
@@ -87,6 +89,7 @@ domLinker.ustensilesIconBtn.addEventListener('click', () => {
   if (domLinker.searchBar.value.length >= 3 && state.newResult.length === 0) {
     noResult(domLinker.ustensilesList, 'Aucun résultat')
   }
+  filtersSearch()
 })
 
 domLinker.appareilsIconBtn.addEventListener('click', () => {
@@ -95,4 +98,38 @@ domLinker.appareilsIconBtn.addEventListener('click', () => {
   if (domLinker.searchBar.value.length >= 3 && state.newResult.length === 0) {
     noResult(domLinker.appareilsList, 'Aucun résultat')
   }
+  filtersSearch()
 })
+
+const tagSearch = (arr, value, container, tagList, btnList, selector) => {
+  arr = arr.filter(item => isIncluded(item, value))
+  emptyDOM(container)
+  filterModel.createFilterListDOM(arr, container, tagList, btnList, selector)
+  if (value.length >= 2 && arr.length === 0) {
+    container.textContent = 'Aucun filtre'
+  }
+}
+
+const filtersSearch = () => {
+  domLinker.filterInputs.forEach(input => {
+    input.addEventListener('input', (e) => {
+      const inputValue = e.target.value
+      switch (e.target.id) {
+        case 'ingredients__searchBar':
+          domLinker.searchBar.value.length < 3 ? filterModel.getAllIngredients(state.allRecipes) : filterModel.getAllIngredients(state.newResult)
+          tagSearch(state.allIngredients, inputValue, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
+          break
+        case 'appareils__searchBar':
+          domLinker.searchBar.value.length < 3 ? filterModel.getAppareilsList(state.allRecipes) : filterModel.getAppareilsList(state.newResult)
+          tagSearch(state.allAppareils, inputValue, domLinker.appareilsList, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li')
+          state.allAppareils = []
+          break
+        case 'ustensiles__searchBar':
+          domLinker.searchBar.value.length < 3 ? filterModel.getUstensilsList(state.allRecipes) : filterModel.getUstensilsList(state.newResult)
+          tagSearch(state.allUstensils, inputValue, domLinker.ustensilesList, state.tags.ustensil, state.tagUstList, '.ustensiles__list>ul>li')
+          state.allUstensils = []
+          break
+      }
+    })
+  })
+}
