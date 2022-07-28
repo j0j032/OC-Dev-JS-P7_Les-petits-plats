@@ -31,6 +31,7 @@ const searchedRecipes = async (value) => {
     noResult(domLinker.ustensilesList, 'Aucun résultat')
     noResult(domLinker.ingredientsList, 'Aucun résultat')
   }
+  console.log('NewResult (searchBar):', state.newResult)
 }
 
 const displayRecipe = (data) => {
@@ -46,7 +47,11 @@ window.onload = allRecipes()
 
 domLinker.searchBar.addEventListener('input', (e) => {
   const inputValue = e.target.value
-  inputValue.length >= 3 ? searchedRecipes(inputValue) : allRecipes()
+  if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
+    inputValue.length >= 3 ? searchedRecipes(inputValue) : allRecipes()
+  } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {
+    console.log('il y a un tag')
+  }
 })
 
 const displayIngList = (data) => {

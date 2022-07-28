@@ -1,6 +1,7 @@
 module.exports = {
-  newResult: [],
   allRecipes: [],
+  newResult: [],
+  finalResult: [],
   allIngredients: [],
   allAppareils: [],
   allUstensils: [],

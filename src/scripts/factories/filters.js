@@ -1,7 +1,8 @@
-const { createElement, emptyDOM, isIncluded, isFound, noResult, toggleList } = require('../components/dom')
+const { createElement, emptyDOM, toggleList, noResult } = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const state = require('../components/state')
 const { createRecipeCard } = require('./recipe')
+const { isIncluded, isFound, getLastItem } = require('../components/search')
 
 module.exports = {
 
@@ -95,16 +96,6 @@ module.exports = {
     }
 
     /**
-     * TO GET LAST ITEM OF AN ARRAY (used in getTag method)
-     * @param {array}
-     * @returns last item
-     */
-    const getLastItem = (arr) => {
-      const lastItem = arr[arr.length - 1]
-      return lastItem
-    }
-
-    /**
      * TO CREATE A TAG
      * @param {string} value = take last item of an array of tag
      * @param {string} category = to set class attribute in function of tag category
@@ -123,7 +114,7 @@ module.exports = {
      */
     const displayUpdateDOM = () => {
       emptyDOM(domLinker.resultsContainer)
-      state.newResult.forEach(recipe => {
+      state.finalResult.forEach(recipe => {
         const recipeModel = createRecipeCard(recipe)
         const recipeCardDOM = recipeModel.getRecipeCardDOM()
         domLinker.resultsContainer.appendChild(recipeCardDOM)
@@ -136,23 +127,29 @@ module.exports = {
      */
     // for appliances tag
     const applyFilterApp = () => {
-      state.newResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
+      state.finalResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
       displayUpdateDOM()
-      console.log('NewResult', state.newResult)
+      console.log('finalResult', state.finalResult)
     }
     // for ingredients tag
     const applyFilterIng = () => {
       state.tags.ingredient.forEach(tag => {
-        state.newResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
+        state.finalResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
       })
       displayUpdateDOM()
-      console.log('NewResult', state.newResult)
+      console.log('finalResult', state.finalResult)
     }
     // for ustensils tag
     const applyFilterUst = () => {
-      state.newResult = state.newResult.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
+      state.finalResult = state.newResult.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
       displayUpdateDOM()
-      console.log('NewResult', state.newResult)
+      console.log('finalResult', state.finalResult)
+    }
+
+    const applyAllTagFilters = () => {
+      applyFilterApp()
+      applyFilterIng()
+      applyFilterUst()
     }
 
     /**
@@ -163,7 +160,8 @@ module.exports = {
      */
     const getTag = (tagList, value, target) => {
       if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
-        state.newResult = state.allRecipes
+        state.finalResult = state.newResult
+        state.finalResult = state.allRecipes
       }
       tagList.push(value)
       if (state.allIngredients.includes(value)) {
@@ -236,6 +234,6 @@ module.exports = {
       removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e)) })
     }
 
-    return { createFilterListDOM, getAllIngredients, getAppareilsList, getUstensilsList, createTag }
+    return { createFilterListDOM, getAllIngredients, getAppareilsList, getUstensilsList, createTag, applyAllTagFilters }
   }
 }
