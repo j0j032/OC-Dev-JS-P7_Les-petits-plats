@@ -1,13 +1,10 @@
 module.exports = {
-  allRecipes: [], // All from API
-  newResult: [], // Update fromFilters
-  allIngredients: [], // List
-  allAppareils: [], // List
-  allUstensils: [], // List
-  tagIngList: [], // Btn
-  tagAppList: [], // Btn
-  tagUstList: [], // Btn
-  // Tags happen
+  allRecipes: [],
+  newResult: [],
+  finalResult: [],
+  allIngredients: [],
+  allAppareils: [],
+  allUstensils: [],
   tags: {
     ingredient: [],
     appliance: [],
