@@ -1,7 +1,8 @@
-const { createElement, emptyDOM, isIncluded, isFound, noResult } = require('../components/dom')
+const { createElement, emptyDOM, toggleList, noResult } = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const state = require('../components/state')
 const { createRecipeCard } = require('./recipe')
+const { isIncluded, isFound, getLastItem } = require('../components/search')
 
 module.exports = {
 
@@ -77,85 +78,6 @@ module.exports = {
       })
       state.allUstensils = [...new Set(state.allUstensils)]
     }
-
-    const filterBtnPositionShown = () => {
-      if (domLinker.ingredientsList.classList.contains('show')) {
-        hideList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'Ustensiles')
-        hideList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'Appareils')
-        domLinker.appareilsClosedBtn.classList.add('adapt__app--toIng')
-      }
-      if (domLinker.appareilsList.classList.contains('show')) {
-        hideList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'Ustensiles')
-        hideList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'Ingrédients')
-        domLinker.appareilsClosedBtn.classList.add('adapt__app--toSelf')
-        domLinker.ustensilesClosedBtn.classList.add('adapt__ust--toApp')
-      }
-      if (domLinker.ustensilesList.classList.contains('show')) {
-        hideList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'Appareils')
-        hideList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'Ingrédients')
-        domLinker.ustensilesClosedBtn.classList.add('adapt__ust--toSelf')
-      }
-    }
-    const filterBtnPositionHidden = () => {
-      if (domLinker.appareilsClosedBtn.classList.contains('adapt__app--toIng')) {
-        domLinker.appareilsClosedBtn.classList.remove('adapt__app--toIng')
-      } else if (domLinker.appareilsClosedBtn.classList.contains('adapt__app--toSelf')) {
-        domLinker.appareilsClosedBtn.classList.remove('adapt__app--toSelf')
-        domLinker.ustensilesClosedBtn.classList.remove('adapt__ust--toApp')
-      } else if (domLinker.ustensilesClosedBtn.classList.contains('adapt__ust--toSelf')) {
-        domLinker.ustensilesClosedBtn.classList.remove('adapt__ust--toSelf')
-      }
-    }
-
-    // THE 3 FOLLOWING ARE TO TOGGLE DISPLAY FILTERLIST
-    /**
-     * DISPLAY
-     * @param {HTML el} btn to toggle (icon)
-     * @param {HTML el} list container to display list
-     * @param {HTML el} container main container to set visibility
-     * @param {HTML el} placeHolder to set and allow user search input
-     * @param {string} textSearch to set placholder text when search is available
-     */
-    const displayList = (btn, list, container, placeHolder, textSearch) => {
-      btn.style.transform = 'rotate(180deg)'
-      list.classList.add('show')
-      filterBtnPositionShown()
-      list.classList.remove('hidden')
-      container.classList.add('absolute')
-      placeHolder.classList.add('show')
-      placeHolder.removeAttribute('disabled')
-      placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
-      placeHolder.focus()
-    }
-    /**
-     * HIDE
-     * @param {HTML el} btn to toggle (icon)
-     * @param {HTML el} list container to display list
-     * @param {HTML el} container main container to set visibility
-     * @param {HTML el} placeHolder to set and allow user search input
-     * @param {string} textDefault to displayBack the btn text
-     */
-    const hideList = (btn, list, container, placeHolder, textDefault) => {
-      btn.style.transform = 'rotate(0deg)'
-      list.classList.remove('show')
-      filterBtnPositionHidden()
-      list.classList.add('hidden')
-      list.classList.remove('onSearch')
-      container.classList.remove('absolute')
-      placeHolder.classList.remove('show')
-      placeHolder.setAttribute('disabled', '')
-      placeHolder.setAttribute('placeholder', textDefault)
-      placeHolder.value = ''
-    }
-    // SAME PARAM AS DISPLAY AND HIDE
-    const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) => {
-      if (list.classList.contains('hidden')) {
-        displayList(btn, list, container, placeHolder, textSearch)
-      } else {
-        hideList(btn, list, container, placeHolder, textDefault)
-      }
-    }
-
     /**
      * TO SET TAG EVENT LISTENER TO FILTERLIST ITEM WHEN CREATE
      * @param {array} tagList to fill an array of tag when user select an item in the list
@@ -171,16 +93,6 @@ module.exports = {
           getTag(tagList, e.target.outerText, e.target)
         })
       })
-    }
-
-    /**
-     * TO GET LAST ITEM OF AN ARRAY (used in getTag method)
-     * @param {array}
-     * @returns last item
-     */
-    const getLastItem = (arr) => {
-      const lastItem = arr[arr.length - 1]
-      return lastItem
     }
 
     /**
@@ -202,7 +114,7 @@ module.exports = {
      */
     const displayUpdateDOM = () => {
       emptyDOM(domLinker.resultsContainer)
-      state.newResult.forEach(recipe => {
+      state.finalResult.forEach(recipe => {
         const recipeModel = createRecipeCard(recipe)
         const recipeCardDOM = recipeModel.getRecipeCardDOM()
         domLinker.resultsContainer.appendChild(recipeCardDOM)
@@ -215,23 +127,29 @@ module.exports = {
      */
     // for appliances tag
     const applyFilterApp = () => {
-      state.newResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
+      state.finalResult = state.newResult.filter(recipe => isIncluded(recipe.appliance, getLastItem(state.tags.appliance)))
       displayUpdateDOM()
-      console.log('NewResult', state.newResult)
+      console.log('finalResult', state.finalResult)
     }
     // for ingredients tag
     const applyFilterIng = () => {
       state.tags.ingredient.forEach(tag => {
-        state.newResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
+        state.finalResult = state.newResult.filter(recipe => isFound(recipe.ingredients, 'ingredient', tag))
       })
       displayUpdateDOM()
-      console.log('NewResult', state.newResult)
+      console.log('finalResult', state.finalResult)
     }
     // for ustensils tag
     const applyFilterUst = () => {
-      state.newResult = state.newResult.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
+      state.finalResult = state.newResult.filter(recipe => recipe.ustensils.includes(getLastItem(state.tags.ustensil)))
       displayUpdateDOM()
-      console.log('NewResult', state.newResult)
+      console.log('finalResult', state.finalResult)
+    }
+
+    const applyAllTagFilters = () => {
+      applyFilterApp()
+      applyFilterIng()
+      applyFilterUst()
     }
 
     /**
@@ -242,7 +160,8 @@ module.exports = {
      */
     const getTag = (tagList, value, target) => {
       if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
-        state.newResult = state.allRecipes
+        state.finalResult = state.newResult
+        state.finalResult = state.allRecipes
       }
       tagList.push(value)
       if (state.allIngredients.includes(value)) {
@@ -315,6 +234,6 @@ module.exports = {
       removeTagBtn.forEach(el => { el.addEventListener('click', (e) => removeTag(e)) })
     }
 
-    return { createFilterListDOM, getAllIngredients, getAppareilsList, getUstensilsList, toggleList, createTag }
+    return { createFilterListDOM, getAllIngredients, getAppareilsList, getUstensilsList, createTag, applyAllTagFilters }
   }
 }
