@@ -15,6 +15,10 @@ const logData = async () => {
 }
 logData()
 
+const afficheRecettes = async (value, tags) => {
+  await api.getRecipes(value, tags)
+}
+
 const allRecipes = async () => {
   state.allRecipes = await api.getAllRecipes()
   displayRecipe(state.allRecipes)
@@ -47,6 +51,7 @@ window.onload = allRecipes()
 
 domLinker.searchBar.addEventListener('input', (e) => {
   const inputValue = e.target.value
+  afficheRecettes(inputValue, state.tags.ingredient)
   if (state.tags.ingredient.length === 0 && state.tags.appliance.length === 0 && state.tags.ustensil.length === 0) {
     inputValue.length >= 3 ? searchedRecipes(inputValue) : allRecipes()
   } else if (state.tags.appliance.length > 0 || state.tags.ingredient.length > 0 || state.tags.ustensil.length > 0) {

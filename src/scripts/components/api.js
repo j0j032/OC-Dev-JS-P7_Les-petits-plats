@@ -1,7 +1,18 @@
 const { default: axios } = require('axios')
 const url = 'src/data/recipes.json'
-const { isIncluded, isFound, getLastItem } = require('./search')
+const { isIncluded, isFound, getLastItem, filterMainSearchBar, filterByTags } = require('./search')
 const state = require('../components/state')
+const tagsDefault = {
+  ingredient: [],
+  appliances: [],
+  ustensils: []
+}
+
+const getRecipes = (value = '', tags = tagsDefault) => axios.get(url).then(response => {
+  console.log('tags:', tags)
+  const result = value.length >= 3 ? filterMainSearchBar(response.data, value) : response.data
+  return filterByTags(result, tags)
+})
 
 const getAllRecipes = () => axios.get(url).then(response => response.data.recipes)
 
@@ -17,5 +28,5 @@ const getFilteredRecipes = (value, tag) => axios.get(url).then(response => {
 })
 
 module.exports = {
-  getAllRecipes, getSearchedRecipes, getFilteredRecipes
+  getAllRecipes, getSearchedRecipes, getFilteredRecipes, getRecipes
 }
