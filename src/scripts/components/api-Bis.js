@@ -25,4 +25,23 @@ const getIngredients = (main = '', tags, value = '') => getRecipes(main, tags)
     return filter.length >= 3 ? ingredients.filter(item => isLowerCaseIncluded(item, filter)) : ingredients
   })
 
-module.exports = { logDatas, getRecipes, getIngredients }
+const getAppliances = (main = '', tags, value = '') => getRecipes(main, tags)
+  .then(recipes => {
+    const filter = value === 'Appareils' ? '' : value
+    // Get all unique appliances
+    const appliances = [...new Set(recipes.map(item => item.appliance))]
+    return filter.length >= 3 ? appliances.filter(item => isLowerCaseIncluded(item, filter)) : appliances
+  })
+
+const getUstensils = (main = '', tags, value = '') => getRecipes(main, tags)
+  .then(recipes => {
+    const filter = value === 'Ustensils' ? '' : value
+    let ustensils = []
+    // Get all unique ustensils
+    recipes.forEach(recipe => {
+      ustensils = [...new Set([...ustensils, ...recipe.ustensils])]
+    })
+    return filter.length >= 3 ? ustensils.filter(item => isLowerCaseIncluded(item, filter)) : ustensils
+  })
+
+module.exports = { logDatas, getRecipes, getIngredients, getAppliances, getUstensils }
