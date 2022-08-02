@@ -1,5 +1,5 @@
 const { default: axios } = require('axios')
-const { mainSearch, tagFilter } = require('./search-Bis')
+const { isLowerCaseIncluded, mainSearch, tagFilter } = require('./search-Bis')
 const url = 'src/data/recipes.json'
 const tagsDefault = {
   ingredients: [],
@@ -14,4 +14,15 @@ const getRecipes = (value = '', tags = tagsDefault) => axios.get(url).then(respo
   return tagFilter(result, tags)
 })
 
-module.exports = { logDatas, getRecipes }
+const getIngredients = (main = '', tags, value = '') => getRecipes(main, tags)
+  .then(recipes => {
+    const filter = value === 'Ingrédients' ? '' : value
+    let ingredients = []
+    // Get all unique ingredients
+    recipes.forEach(recipe => {
+      ingredients = [...new Set([...ingredients, ...recipe.ingredients.map(item => item.ingredient)])]
+    })
+    return filter.length >= 3 ? ingredients.filter(item => isLowerCaseIncluded(item, filter)) : ingredients
+  })
+
+module.exports = { logDatas, getRecipes, getIngredients }
