@@ -1,7 +1,7 @@
 module.exports = {
   tags: {
-    ingredient: [],
-    appliance: [],
-    ustensil: []
+    ingredients: [],
+    appliances: [],
+    ustensils: []
   }
 }

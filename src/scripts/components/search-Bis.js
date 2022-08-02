@@ -18,8 +18,12 @@ const noResult = (container, text) => {
 
 const mainSearch = (recipes, value) => recipes.filter(item => isIncluded(item.name, value) || isIncluded(item.description, value) || isFound(item.ingredients, 'ingredient', value))
 
-const filterByLength = (recipes) => recipes.filter(recipe => recipe.name.length < 8)
+const isRecipeIncludesEveryTagIngredient = (recipe, tags) => tags.ingredients.every(ingredient => recipe.ingredients.map(elem => elem.ingredient).includes(ingredient))
+const isRecipeIncludesEveryTagAppliance = (recipe, tags) => tags.appliances.every(appliance => recipe.appliance.includes(appliance))
+const isRecipeIncludesEveryTagUstensil = (recipe, tags) => tags.ustensils.every(ustensil => recipe.ustensils.includes(ustensil))
+
+const tagFilter = (recipes, tags) => recipes.filter(recipe => isRecipeIncludesEveryTagIngredient(recipe, tags) && isRecipeIncludesEveryTagAppliance(recipe, tags) && isRecipeIncludesEveryTagUstensil(recipe, tags))
 
 module.exports = {
-  isIncluded, isFound, noResult, getLastItem, mainSearch, filterByLength
+  isIncluded, isFound, noResult, getLastItem, mainSearch, tagFilter
 }
