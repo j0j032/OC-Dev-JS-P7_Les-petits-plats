@@ -3,7 +3,7 @@ const dom = require('../components/dom')
 module.exports = {
 
   /**
-   * FACTORY TO GET RECIPE CARD
+   * To create a recipe card
    * @param {Object} data
    * @returns Recipe Card
    */

@@ -1,3 +1,11 @@
+/**
+ * To create DOM new Element
+ * @param {HTMLElement} tag - tagName (h1,div,span...)
+ * @param {array} attributes - Set attributes in an array of object: key for attribute type / value for the value of attribute
+ * @param {HTMLElement} parent - To attach new element to parrent
+ * @param {*} text - To set value of text if needed (if text? enter tour text/ if div set to null or '')
+ * @returns new element
+ */
 const createElement = (tag, attributes = [], parent, text) => {
   const element = document.createElement(tag)
 
@@ -23,7 +31,7 @@ const emptyDOM = el => {
   }
 }
 
-const noResult = (container, text) => {
+const displayError = (container, text) => {
   container.textContent = text
 }
 
@@ -75,5 +83,5 @@ const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) 
 }
 
 module.exports = {
-  createElement, emptyDOM, toggleList, noResult
+  createElement, emptyDOM, toggleList, displayError
 }
