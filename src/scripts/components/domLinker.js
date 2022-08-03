@@ -7,7 +7,6 @@ module.exports = {
   ingredientMainBtn: document.querySelector('.filter__btn--ingredient'),
   ingredientsIconBtn: document.getElementById('ingredients__iconBtn'),
   ingredientsList: document.querySelector('.ingredients__list'),
-  ingredientsListUl: document.querySelector('.ingredients__list > ul'),
   ingredientsSearchBar: document.getElementById('ingredients__searchBar'),
   ingredientClosedBtn: document.querySelector('.filter.ingredients'),
 
@@ -18,12 +17,12 @@ module.exports = {
   ustensilesSearchBar: document.querySelector('.ustensiles__searchBar'),
   ustensilesClosedBtn: document.querySelector('.filter.ustensiles'),
 
-  appareils: document.querySelector('.appareils'),
-  appareilMainBtn: document.querySelector('.filter__btn--appareil'),
-  appareilsIconBtn: document.getElementById('appareils__iconBtn'),
-  appareilsList: document.querySelector('.appareils__list'),
-  appareilsSearchBar: document.querySelector('.appareils__searchBar'),
-  appareilsClosedBtn: document.querySelector('.filter.appareils'),
+  appliances: document.querySelector('.appliances'),
+  applianceMainBtn: document.querySelector('.filter__btn--appliance'),
+  appliancesIconBtn: document.getElementById('appliances__iconBtn'),
+  appliancesList: document.querySelector('.appliances__list'),
+  appliancesSearchBar: document.querySelector('.appliances__searchBar'),
+  appliancesClosedBtn: document.querySelector('.filter.appliances'),
 
   arrowIcon: document.querySelectorAll('.filter__btn > span'),
   tagsContainer: document.querySelector('.tags'),

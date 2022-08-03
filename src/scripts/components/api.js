@@ -45,7 +45,7 @@ const getIngredients = (main = '', tags, value = '') => getRecipes(main, tags)
  */
 const getAppliances = (main = '', tags, value = '') => getRecipes(main, tags)
   .then(recipes => {
-    const filter = value === 'Appareils' ? '' : value
+    const filter = value === 'appliances' ? '' : value
     // Get all unique appliances
     const appliances = [...new Set(recipes.map(item => item.appliance))]
     return filter.length >= 3 ? appliances.filter(item => isIncluded(item, filter)) : appliances

@@ -105,7 +105,7 @@
     }
 }
 
-.appareils{
+.appliances{
     background-color: $green;
     @include listContainer;
     &__list{
@@ -128,7 +128,7 @@
     }
 }
 
-#appareils__iconBtn{
+#appliances__iconBtn{
     transition: transform .0.3s ease-in;
     &:hover{
         color: $grey;

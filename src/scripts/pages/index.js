@@ -5,7 +5,7 @@ const { emptyDOM, toggleList, displayError } = require('../components/dom')
 const { isIncluded } = require('../components/search')
 const { createRecipeCard } = require('../factories/recipe')
 const { createFilters } = require('../factories/filter')
-const { ingredientsSearchBar, appareilsSearchBar, ustensilesSearchBar } = require('../components/domLinker')
+const { ingredientsSearchBar, appliancesSearchBar, ustensilesSearchBar } = require('../components/domLinker')
 const filterModel = createFilters()
 
 /**
@@ -49,8 +49,8 @@ const tagEvent = (tagList, tagBtnList, selector, category) => {
         case 'ingredients':
           toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
           break
-        case 'appareils':
-          toggleList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'appareil', 'Appareils')
+        case 'appliances':
+          toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appliance', 'appliances')
           break
         case 'ustensiles':
           toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
@@ -117,14 +117,14 @@ const getAndDisplayAppliancesList = async () => {
   const tagAppBtnList = []
   let appliances
   // eslint-disable-next-line prefer-const
-  appliances = await api.getAppliances(domLinker.searchBar.value, state.Tags, domLinker.appareilsSearchBar.value)
-  emptyDOM(domLinker.appareilsList)
-  appliances.length === 0 ? displayError(domLinker.appareilsList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, domLinker.appareilsList)
+  appliances = await api.getAppliances(domLinker.searchBar.value, state.Tags, domLinker.appliancesSearchBar.value)
+  emptyDOM(domLinker.appliancesList)
+  appliances.length === 0 ? displayError(domLinker.appliancesList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, domLinker.appliancesList)
 
-  tagEvent(state.Tags.appliances, tagAppBtnList, '.appareils__list>ul>li', 'tag tag--app')
+  tagEvent(state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
 
-  appareilsSearchBar.addEventListener('input', () => {
-    tagSearch(appliances, appareilsSearchBar.value, domLinker.appareilsList, state.Tags.appliances, tagAppBtnList, '.appareils__list>ul>li', 'tag tag--app')
+  appliancesSearchBar.addEventListener('input', () => {
+    tagSearch(appliances, appliancesSearchBar.value, domLinker.appliancesList, state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
   })
 }
 
@@ -166,8 +166,8 @@ const init = () => {
         toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
         getAndDisplayIngredientsList()
         break
-      case 'appareils__iconBtn':
-        toggleList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'appareil', 'Appareils')
+      case 'appliances__iconBtn':
+        toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appliance', 'appliances')
         getAndDisplayAppliancesList()
         break
       case 'ustensiles__iconBtn':
