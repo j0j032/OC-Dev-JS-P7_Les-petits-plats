@@ -4,4 +4,4 @@ import 'bootstrap-icons/font/bootstrap-icons.css'
 import { Dropdown } from 'bootstrap'
 /* Inject css */
 require('./scss/app.scss')
-require('./scripts/pages/index-Bis')
+require('./scripts/pages/index')

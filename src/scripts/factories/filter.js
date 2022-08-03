@@ -1,6 +1,6 @@
 const { createElement } = require('../components/dom')
 const domLinker = require('../components/domLinker')
-const state = require('../components/state-Bis')
+const state = require('../components/state')
 
 module.exports = {
 

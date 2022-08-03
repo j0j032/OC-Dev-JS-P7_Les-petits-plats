@@ -1,10 +1,10 @@
-const api = require('../components/api-Bis')
-const state = require('../components/state-Bis')
+const api = require('../components/api')
+const state = require('../components/state')
 const domLinker = require('../components/domLinker')
 const { emptyDOM, toggleList, noResult } = require('../components/dom')
 const { isIncluded } = require('../components/search-Bis')
 const { createRecipeCard } = require('../factories/recipe')
-const { createFilters } = require('../factories/filter-Bis')
+const { createFilters } = require('../factories/filter')
 const { ingredientsSearchBar, appareilsSearchBar, ustensilesSearchBar } = require('../components/domLinker')
 const filterModel = createFilters()
 
