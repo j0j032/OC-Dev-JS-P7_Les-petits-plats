@@ -29,6 +29,20 @@ const tagEvent = (tagList, filterBtns, selector, category) => {
       tagList.push(e.target.outerText)
       filterModel.createTag(e.target.outerText, category)
       applySearchBarFilter()
+
+      // to close container when user select a tag
+      const container = e.target.offsetParent.classList[1]
+      switch (container) {
+        case 'ingredients':
+          toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
+          break
+        case 'appareils':
+          toggleList(domLinker.appareilsIconBtn, domLinker.appareilsList, domLinker.appareils, domLinker.appareilsSearchBar, 'appareil', 'Appareils')
+          break
+        case 'ustensiles':
+          toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
+          break
+      }
     })
   })
 }
