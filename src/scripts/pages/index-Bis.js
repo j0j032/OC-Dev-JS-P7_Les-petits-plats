@@ -62,10 +62,12 @@ const displayAppliancesList = async () => {
   // eslint-disable-next-line prefer-const
   appliances = await api.getAppliances(domLinker.searchBar.value, state.tags, domLinker.appareilsSearchBar.value)
   emptyDOM(domLinker.appareilsList)
-  appliances.length === 0 ? noResult(domLinker.appareilsList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, domLinker.appareilsList, state.tags.appliances, state.tagAppList, '.appareils__list>ul>li')
+  appliances.length === 0 ? noResult(domLinker.appareilsList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, domLinker.appareilsList)
+
+  tagEvent(state.tags.appliances, state.tagAppList, '.appareils__list>ul>li', 'tag tag--app')
 
   appareilsSearchBar.addEventListener('input', () => {
-    tagSearch(appliances, appareilsSearchBar.value, domLinker.appareilsList, state.tags.appliances, state.tagAppList, '.appareils__list>ul>li')
+    tagSearch(appliances, appareilsSearchBar.value, domLinker.appareilsList, state.tags.appliances, state.tagAppList, '.appareils__list>ul>li', 'tag tag--app')
   })
 }
 
@@ -74,10 +76,12 @@ const displayUstensilsList = async () => {
   // eslint-disable-next-line prefer-const
   ustensiles = await api.getUstensils(domLinker.searchBar.value, state.tags, domLinker.ustensilesSearchBar.value)
   emptyDOM(domLinker.ustensilesList)
-  ustensiles.length === 0 ? noResult(domLinker.ustensilesList, 'Aucun résultat') : filterModel.createFilterListDOM(ustensiles, domLinker.ustensilesList, state.tags.ustensils, state.tagAppList, '.ustensiles__list>ul>li')
+  ustensiles.length === 0 ? noResult(domLinker.ustensilesList, 'Aucun résultat') : filterModel.createFilterListDOM(ustensiles, domLinker.ustensilesList)
+
+  tagEvent(state.tags.ustensils, state.tagAppList, '.ustensiles__list>ul>li', 'tag tag--ust')
 
   ustensilesSearchBar.addEventListener('input', () => {
-    tagSearch(ustensiles, ustensilesSearchBar.value, domLinker.ustensilesList, state.tags.ustensils, state.tagUstList, '.ustensiles__list>ul>li')
+    tagSearch(ustensiles, ustensilesSearchBar.value, domLinker.ustensilesList, state.tags.ustensils, state.tagUstList, '.ustensiles__list>ul>li', 'tag tag--ust')
   })
 }
 
