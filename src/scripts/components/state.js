@@ -1,10 +1,7 @@
 module.exports = {
-  tags: {
+  Tags: {
     ingredients: [],
     appliances: [],
     ustensils: []
-  },
-  tagIngList: [], // Btn
-  tagAppList: [], // Btn
-  tagUstList: [] // Btn
+  }
 }

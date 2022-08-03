@@ -35,8 +35,8 @@ module.exports = {
       const tagName = event.target.parentElement.firstChild.data
       const tagDom = event.target.parentElement
 
-      for (const category of Object.keys(state.tags)) {
-        const content = state.tags[category]
+      for (const category of Object.keys(state.Tags)) {
+        const content = state.Tags[category]
         content.forEach(el => {
           const tagToDelete = content.indexOf(tagName)
           if (tagToDelete !== -1) {
