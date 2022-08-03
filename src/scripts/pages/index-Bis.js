@@ -31,12 +31,26 @@ const tagSearch = (arr, value, container, tagList, btnList, selector) => {
   }
 }
 
+const tagEvent = (tagList, filterBtns, selector) => {
+  filterBtns = document.querySelectorAll(selector)
+  filterBtns.forEach(el => {
+    el.addEventListener('click', (e) => {
+      tagList.push(e.target.outerText)
+      console.log(tagList, state.tags, e.target.outerText, e.target)
+      filterModel.createTag(e.target.outerText, 'tag tag--ing')
+      applySearchBarFilter()
+    })
+  })
+}
+
 const displayIngredientsList = async () => {
   let ingredients
   // eslint-disable-next-line prefer-const
   ingredients = await api.getIngredients(domLinker.searchBar.value, state.tags, domLinker.ingredientsSearchBar.value)
   emptyDOM(domLinker.ingredientsList)
-  ingredients.length === 0 ? noResult(domLinker.ingredientsList, 'Aucun résultat') : filterModel.createFilterListDOM(ingredients, domLinker.ingredientsList, state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li')
+  ingredients.length === 0 ? noResult(domLinker.ingredientsList, 'Aucun résultat') : filterModel.createFilterListDOM(ingredients, domLinker.ingredientsList)
+
+  tagEvent(state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li')
 
   ingredientsSearchBar.addEventListener('input', () => {
     tagSearch(ingredients, ingredientsSearchBar.value, domLinker.ingredientsList, state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li')
