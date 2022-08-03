@@ -22,25 +22,25 @@ const applySearchBarFilter = async () => {
   recipes.length === 0 ? noResult(domLinker.resultsContainer, 'Aucune recette trouvée') : displayRecipes(recipes)
 }
 
-const tagSearch = (arr, value, container, tagList, btnList, selector) => {
-  arr = arr.filter(item => isIncluded(item, value))
-  emptyDOM(container)
-  filterModel.createFilterListDOM(arr, container, tagList, btnList, selector)
-  if (value.length >= 2 && arr.length === 0) {
-    container.textContent = 'Aucun filtre'
-  }
-}
-
-const tagEvent = (tagList, filterBtns, selector) => {
+const tagEvent = (tagList, filterBtns, selector, category) => {
   filterBtns = document.querySelectorAll(selector)
   filterBtns.forEach(el => {
     el.addEventListener('click', (e) => {
       tagList.push(e.target.outerText)
-      console.log(tagList, state.tags, e.target.outerText, e.target)
-      filterModel.createTag(e.target.outerText, 'tag tag--ing')
+      filterModel.createTag(e.target.outerText, category)
       applySearchBarFilter()
     })
   })
+}
+
+const tagSearch = (arr, value, container, tagList, btnList, selector, category) => {
+  arr = arr.filter(item => isIncluded(item, value))
+  emptyDOM(container)
+  filterModel.createFilterListDOM(arr, container)
+  tagEvent(tagList, btnList, selector, category)
+  if (value.length >= 2 && arr.length === 0) {
+    container.textContent = 'Aucun filtre'
+  }
 }
 
 const displayIngredientsList = async () => {
@@ -50,10 +50,10 @@ const displayIngredientsList = async () => {
   emptyDOM(domLinker.ingredientsList)
   ingredients.length === 0 ? noResult(domLinker.ingredientsList, 'Aucun résultat') : filterModel.createFilterListDOM(ingredients, domLinker.ingredientsList)
 
-  tagEvent(state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li')
+  tagEvent(state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li', 'tag tag--ing')
 
   ingredientsSearchBar.addEventListener('input', () => {
-    tagSearch(ingredients, ingredientsSearchBar.value, domLinker.ingredientsList, state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li')
+    tagSearch(ingredients, ingredientsSearchBar.value, domLinker.ingredientsList, state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li', 'tag tag--ing')
   })
 }
 
