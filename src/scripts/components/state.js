@@ -1,13 +1,10 @@
 module.exports = {
-  allRecipes: [],
-  newResult: [],
-  finalResult: [],
-  allIngredients: [],
-  allAppareils: [],
-  allUstensils: [],
   tags: {
-    ingredient: [],
-    appliance: [],
-    ustensil: []
-  }
+    ingredients: [],
+    appliances: [],
+    ustensils: []
+  },
+  tagIngList: [], // Btn
+  tagAppList: [], // Btn
+  tagUstList: [] // Btn
 }
