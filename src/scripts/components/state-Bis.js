@@ -3,5 +3,8 @@ module.exports = {
     ingredients: [],
     appliances: [],
     ustensils: []
-  }
+  },
+  tagIngList: [], // Btn
+  tagAppList: [], // Btn
+  tagUstList: [] // Btn
 }

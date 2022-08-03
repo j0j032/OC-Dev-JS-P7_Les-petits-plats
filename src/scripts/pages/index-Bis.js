@@ -1,10 +1,10 @@
 const api = require('../components/api-Bis')
+const state = require('../components/state-Bis')
 const domLinker = require('../components/domLinker')
 const { emptyDOM, toggleList, noResult } = require('../components/dom')
-const { createRecipeCard } = require('../factories/recipe')
-const state = require('../components/state-Bis')
-const { createFilters } = require('../factories/filters')
 const { isIncluded } = require('../components/search-Bis')
+const { createRecipeCard } = require('../factories/recipe')
+const { createFilters } = require('../factories/filter-Bis')
 const { ingredientsSearchBar, appareilsSearchBar, ustensilesSearchBar } = require('../components/domLinker')
 const filterModel = createFilters()
 
@@ -19,9 +19,9 @@ const displayRecipes = (data) => {
 
 const applySearchBarFilter = async () => {
   const recipes = await api.getRecipes(domLinker.searchBar.value, state.tags)
-  state.newRecipes = recipes
   recipes.length === 0 ? noResult(domLinker.resultsContainer, 'Aucune recette trouvée') : displayRecipes(recipes)
 }
+
 const tagSearch = (arr, value, container, tagList, btnList, selector) => {
   arr = arr.filter(item => isIncluded(item, value))
   emptyDOM(container)
@@ -36,10 +36,10 @@ const displayIngredientsList = async () => {
   // eslint-disable-next-line prefer-const
   ingredients = await api.getIngredients(domLinker.searchBar.value, state.tags, domLinker.ingredientsSearchBar.value)
   emptyDOM(domLinker.ingredientsList)
-  ingredients.length === 0 ? noResult(domLinker.ingredientsList, 'Aucun résultat') : filterModel.createFilterListDOM(ingredients, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
+  ingredients.length === 0 ? noResult(domLinker.ingredientsList, 'Aucun résultat') : filterModel.createFilterListDOM(ingredients, domLinker.ingredientsList, state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li')
 
   ingredientsSearchBar.addEventListener('input', () => {
-    tagSearch(ingredients, ingredientsSearchBar.value, domLinker.ingredientsList, state.tags.ingredient, state.tagIngList, '.ingredients__list>ul>li')
+    tagSearch(ingredients, ingredientsSearchBar.value, domLinker.ingredientsList, state.tags.ingredients, state.tagIngList, '.ingredients__list>ul>li')
   })
 }
 
@@ -48,10 +48,10 @@ const displayAppliancesList = async () => {
   // eslint-disable-next-line prefer-const
   appliances = await api.getAppliances(domLinker.searchBar.value, state.tags, domLinker.appareilsSearchBar.value)
   emptyDOM(domLinker.appareilsList)
-  appliances.length === 0 ? noResult(domLinker.appareilsList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, domLinker.appareilsList, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li')
+  appliances.length === 0 ? noResult(domLinker.appareilsList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, domLinker.appareilsList, state.tags.appliances, state.tagAppList, '.appareils__list>ul>li')
 
   appareilsSearchBar.addEventListener('input', () => {
-    tagSearch(appliances, appareilsSearchBar.value, domLinker.appareilsList, state.tags.appliance, state.tagAppList, '.appareils__list>ul>li')
+    tagSearch(appliances, appareilsSearchBar.value, domLinker.appareilsList, state.tags.appliances, state.tagAppList, '.appareils__list>ul>li')
   })
 }
 
@@ -63,7 +63,7 @@ const displayUstensilsList = async () => {
   ustensiles.length === 0 ? noResult(domLinker.ustensilesList, 'Aucun résultat') : filterModel.createFilterListDOM(ustensiles, domLinker.ustensilesList, state.tags.ustensils, state.tagAppList, '.ustensiles__list>ul>li')
 
   ustensilesSearchBar.addEventListener('input', () => {
-    tagSearch(ustensiles, ustensilesSearchBar.value, domLinker.ustensilesList, state.tags.ustensils, state.tagAppList, '.ustensiles__list>ul>li')
+    tagSearch(ustensiles, ustensilesSearchBar.value, domLinker.ustensilesList, state.tags.ustensils, state.tagUstList, '.ustensiles__list>ul>li')
   })
 }
 
