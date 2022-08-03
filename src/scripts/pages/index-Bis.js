@@ -29,6 +29,7 @@ const tagEvent = (tagList, filterBtns, selector, category) => {
       tagList.push(e.target.outerText)
       filterModel.createTag(e.target.outerText, category)
       applySearchBarFilter()
+      closeTagEvent()
 
       // to close container when user select a tag
       const container = e.target.offsetParent.classList[1]
@@ -43,6 +44,15 @@ const tagEvent = (tagList, filterBtns, selector, category) => {
           toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
           break
       }
+    })
+  })
+}
+const closeTagEvent = () => {
+  const removeTagBtn = document.querySelectorAll('.tag__close')
+  removeTagBtn.forEach(el => {
+    el.addEventListener('click', (e) => {
+      filterModel.removeTag(e)
+      applySearchBarFilter()
     })
   })
 }
