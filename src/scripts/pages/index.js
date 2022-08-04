@@ -44,7 +44,6 @@ const tagEvent = (tagList, tagBtnList, selector, category) => {
       closeTagEvent()
 
       // to close container when user select a tag
-      console.log(e)
       const container = e.target.classList[1]
       switch (container) {
         case 'list--ing':

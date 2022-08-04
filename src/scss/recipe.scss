@@ -4,8 +4,8 @@
     height: fit-content;
     display: flex; 
     flex-wrap: wrap;
-    justify-content:space-between;
-    gap: 50px; 
+    justify-content:flex-start;
+    gap:50px 3.49% ; 
     
     /* display: grid; 
     grid-template-columns: 1fr 1fr 1fr; 
@@ -16,25 +16,9 @@
       ". . ."
       ". . .";  */
 }
-@include desktopM{
-    .cards-container{
-        gap: 30px;
-    }
-}
-
-@include desktopS{
-    .cards-container{
-        gap: 20px;
-    }
-}
-
-.absolute--results{
-     // position:fixed;
-     //z-index: 3;
-}
 
 .recipe-card{
-    width: 380px;
+    width: 31%;
     height: 364px;
     display: flex;
     flex-direction: column;
@@ -116,15 +100,10 @@
        }
     }
 }
-@include desktopM{
-    .recipe-card{
-        width: 340px;
-    }
-}
+
 
 @include desktopS{
     .recipe-card{
-        width: 280px;
         &__imgContainer{
             height: 40%;
         }
@@ -136,8 +115,12 @@
 }
 
 @include tablet{
+    .cards-container{
+        justify-content: space-between;
+        gap: 30px 2% ;
+    }
     .recipe-card{
-        width: 330px;
+        width: 48%;
     }
 }
 
