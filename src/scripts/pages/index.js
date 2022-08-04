@@ -166,14 +166,38 @@ const init = () => {
       case 'ingredients__iconBtn':
         toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
         getAndDisplayIngredientsList()
+
+        // close others List if is shown
+        if (domLinker.appliancesList.classList.contains('show')) {
+          toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appareil', 'Appareils')
+        }
+        if (domLinker.ustensilesList.classList.contains('show')) {
+          toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
+        }
         break
       case 'appliances__iconBtn':
         toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appareil', 'Appareils')
         getAndDisplayAppliancesList()
+
+        // close others List if is shown
+        if (domLinker.ingredientsList.classList.contains('show')) {
+          toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
+        }
+        if (domLinker.ustensilesList.classList.contains('show')) {
+          toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
+        }
         break
       case 'ustensiles__iconBtn':
         toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
         getAndDisplayUstensilsList()
+
+        // close others List if is shown
+        if (domLinker.ingredientsList.classList.contains('show')) {
+          toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
+        }
+        if (domLinker.appliancesList.classList.contains('show')) {
+          toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appareil', 'Appareils')
+        }
         break
     }
   }))
