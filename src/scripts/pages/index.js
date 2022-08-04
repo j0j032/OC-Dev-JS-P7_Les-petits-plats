@@ -44,15 +44,15 @@ const tagEvent = (tagList, tagBtnList, selector, category) => {
       closeTagEvent()
 
       // to close container when user select a tag
-      const container = e.target.offsetParent.classList[1]
+      const container = e.target.classList[1]
       switch (container) {
-        case 'ingredients':
+        case 'list--ing':
           toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
           break
-        case 'appliances':
+        case 'list--app':
           toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appliance', 'appliances')
           break
-        case 'ustensiles':
+        case 'list--ust':
           toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
           break
       }
@@ -74,20 +74,21 @@ const closeTagEvent = () => {
  * To search a tag when a list has been displayed
  * @param {Array} arr - Array of list item from filled from api
  * @param {String} value - Input value to search (from: component/search/isIncluded())
+ * @param {String} categoryList - To set the right class to the lists in terms of category
  * @param {HTML Element} container - To display the result (from: factories/filter/createFilterListDOM)
  * The 4th following are the parameters from tagEvent()
  * @param {Array} tagList
  * @param {Array} btnList
  * @param {HTML Element} selector
- * @param {HTML Element} category
+ * @param {HTML Element} categoryTag
  */
-const tagSearch = (arr, value, container, tagList, btnList, selector, category) => {
+const tagSearch = (arr, value, categoryList, container, tagList, btnList, selector, categoryTag) => {
   arr = arr.filter(item => isIncluded(item, value))
   emptyDOM(container)
-  filterModel.createFilterListDOM(arr, container)
-  tagEvent(tagList, btnList, selector, category)
+  filterModel.createFilterListDOM(arr, categoryList, container)
+  tagEvent(tagList, btnList, selector, categoryTag)
   if (value.length >= 2 && arr.length === 0) {
-    container.textContent = 'Aucun filtre'
+    displayError(container, 'Aucun résultat')
   }
 }
 
@@ -104,12 +105,12 @@ const getAndDisplayIngredientsList = async () => {
   // eslint-disable-next-line prefer-const
   ingredients = await api.getIngredients(domLinker.searchBar.value, state.Tags, domLinker.ingredientsSearchBar.value)
   emptyDOM(domLinker.ingredientsList)
-  ingredients.length === 0 ? displayError(domLinker.ingredientsList, 'Aucun résultat') : filterModel.createFilterListDOM(ingredients, domLinker.ingredientsList)
+  ingredients.length === 0 ? displayError(domLinker.ingredientsList, 'Aucun résultat') : filterModel.createFilterListDOM(ingredients, 'ingredients', domLinker.ingredientsList)
 
   tagEvent(state.Tags.ingredients, tagIngBtnList, '.ingredients__list>ul>li', 'tag tag--ing')
 
   ingredientsSearchBar.addEventListener('input', () => {
-    tagSearch(ingredients, ingredientsSearchBar.value, domLinker.ingredientsList, state.Tags.ingredients, tagIngBtnList, '.ingredients__list>ul>li', 'tag tag--ing')
+    tagSearch(ingredients, ingredientsSearchBar.value, 'ingredients', domLinker.ingredientsList, state.Tags.ingredients, tagIngBtnList, '.ingredients__list>ul>li', 'tag tag--ing')
   })
 }
 
@@ -119,12 +120,12 @@ const getAndDisplayAppliancesList = async () => {
   // eslint-disable-next-line prefer-const
   appliances = await api.getAppliances(domLinker.searchBar.value, state.Tags, domLinker.appliancesSearchBar.value)
   emptyDOM(domLinker.appliancesList)
-  appliances.length === 0 ? displayError(domLinker.appliancesList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, domLinker.appliancesList)
+  appliances.length === 0 ? displayError(domLinker.appliancesList, 'Aucun résultat') : filterModel.createFilterListDOM(appliances, 'appliances', domLinker.appliancesList)
 
   tagEvent(state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
 
   appliancesSearchBar.addEventListener('input', () => {
-    tagSearch(appliances, appliancesSearchBar.value, domLinker.appliancesList, state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
+    tagSearch(appliances, appliancesSearchBar.value, 'appliances', domLinker.appliancesList, state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
   })
 }
 
@@ -134,12 +135,12 @@ const getAndDisplayUstensilsList = async () => {
   // eslint-disable-next-line prefer-const
   ustensiles = await api.getUstensils(domLinker.searchBar.value, state.Tags, domLinker.ustensilesSearchBar.value)
   emptyDOM(domLinker.ustensilesList)
-  ustensiles.length === 0 ? displayError(domLinker.ustensilesList, 'Aucun résultat') : filterModel.createFilterListDOM(ustensiles, domLinker.ustensilesList)
+  ustensiles.length === 0 ? displayError(domLinker.ustensilesList, 'Aucun résultat') : filterModel.createFilterListDOM(ustensiles, 'ustensils', domLinker.ustensilesList)
 
   tagEvent(state.Tags.ustensils, tagUstBtnList, '.ustensiles__list>ul>li', 'tag tag--ust')
 
   ustensilesSearchBar.addEventListener('input', () => {
-    tagSearch(ustensiles, ustensilesSearchBar.value, domLinker.ustensilesList, state.Tags.ustensils, tagUstBtnList, '.ustensiles__list>ul>li', 'tag tag--ust')
+    tagSearch(ustensiles, ustensilesSearchBar.value, 'ustensils', domLinker.ustensilesList, state.Tags.ustensils, tagUstBtnList, '.ustensiles__list>ul>li', 'tag tag--ust')
   })
 }
 
@@ -165,14 +166,38 @@ const init = () => {
       case 'ingredients__iconBtn':
         toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
         getAndDisplayIngredientsList()
+
+        // close others List if is shown
+        if (domLinker.appliancesList.classList.contains('show')) {
+          toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appareil', 'Appareils')
+        }
+        if (domLinker.ustensilesList.classList.contains('show')) {
+          toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
+        }
         break
       case 'appliances__iconBtn':
-        toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appliance', 'appliances')
+        toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appareil', 'Appareils')
         getAndDisplayAppliancesList()
+
+        // close others List if is shown
+        if (domLinker.ingredientsList.classList.contains('show')) {
+          toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
+        }
+        if (domLinker.ustensilesList.classList.contains('show')) {
+          toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
+        }
         break
       case 'ustensiles__iconBtn':
         toggleList(domLinker.ustensilesIconBtn, domLinker.ustensilesList, domLinker.ustensiles, domLinker.ustensilesSearchBar, 'ustensile', 'Ustensiles')
         getAndDisplayUstensilsList()
+
+        // close others List if is shown
+        if (domLinker.ingredientsList.classList.contains('show')) {
+          toggleList(domLinker.ingredientsIconBtn, domLinker.ingredientsList, domLinker.ingredients, domLinker.ingredientsSearchBar, 'ingrédient', 'Ingrédients')
+        }
+        if (domLinker.appliancesList.classList.contains('show')) {
+          toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appareil', 'Appareils')
+        }
         break
     }
   }))

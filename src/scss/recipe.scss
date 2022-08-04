@@ -1,30 +1,30 @@
 .cards-container{
     margin-top: 40px;
     width: 100%;
-    height: 400px;
+    height: fit-content;
     display: flex; 
     flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 50px 50px; 
+    justify-content:flex-start;
+    gap:50px 3.49% ; 
 }
 
 .recipe-card{
-    width: fit-content;
-    height: fit-content;
+    width: 31%;
+    height: 364px;
     display: flex;
     flex-direction: column;
     &__imgContainer{
         border-radius: 5px 5px 0 0;
         background-color: $grey;
-        width: 380px;
-        height: 178px;
+        width: 100%;
+        height: 50%;
     }
     &__infosContainer{
         border-radius:0 0 5px 5px;
         background-color: $lightGrey;
-        width: 380px;
-        height: 178px;
-        padding: 15px;
+        width: 100%;
+        height: 50%;
+        padding: 5%;
     }
     &__headContainer{
         display: flex;
@@ -89,5 +89,41 @@
             overflow: hidden;
             text-overflow: ellipsis;
        }
+    }
+}
+
+
+@include desktopS{
+    .recipe-card{
+        &__imgContainer{
+            height: 40%;
+        }
+        &__infosContainer{
+            height: 60%;
+            padding: 7%;
+        }
+    }
+}
+
+@include tablet{
+    .cards-container{
+        justify-content: space-between;
+        gap: 30px 2% ;
+    }
+    .recipe-card{
+        width: 48%;
+    }
+}
+
+@include mobile{
+    .recipe-card{
+        width: 100%;
+        &__imgContainer{
+            height: 50%;
+        }
+        &__infosContainer{
+            height: 50%;
+            padding: 4%;
+        }
     }
 }
