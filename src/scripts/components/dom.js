@@ -103,6 +103,13 @@ const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) 
   }
 }
 
+const playAnimation = (el, animation) => {
+  el.classList.add(animation)
+  setTimeout(() => {
+    el.classList.remove(animation)
+  }, '1000')
+}
+
 module.exports = {
-  createElement, emptyDOM, toggleClass, toggleList, displayError
+  createElement, emptyDOM, toggleClass, toggleList, displayError, playAnimation
 }

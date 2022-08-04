@@ -1,4 +1,4 @@
-const { createElement, toggleClass } = require('../components/dom')
+const { createElement, toggleClass, playAnimation } = require('../components/dom')
 const domLinker = require('../components/domLinker')
 const state = require('../components/state')
 
@@ -55,6 +55,7 @@ module.exports = {
       const closeAttribute = [{ class: 'tag__close bi bi-x-circle' }]
       const tag = createElement('span', tagAttribute, domLinker.tagsContainer, value)
       createElement('i', closeAttribute, tag, null)
+      playAnimation(tag, 'tagAppear')
     }
     /**
      * @param {Prototype} event - from event Listener to get the name of the tag and the container to delete
