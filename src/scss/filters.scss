@@ -39,8 +39,12 @@
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    position: relative;
 }
+
+/* .filter__btn.filter__btn--ingredient{
+    transition: width 2s ease-in-out;
+    transition: height 2s ease-in-out;
+} */
 
 .filter{
     width: fit-content;
@@ -68,44 +72,24 @@
 .hidden{
     display: none;
 }
-.absolute{
-    position:absolute;
+.display{
     z-index: 3;
     padding-left: 1rem;
-    padding-right: 1.9rem;
-    padding-bottom: 1.9rem;
+    padding-right: 1.2rem;
+    padding-bottom: 1.2rem;
+    box-shadow: 0px 4px 17px -5px rgba(0,0,0,0.56);
 }
 
-.adapt{
-    &__app{
-        &--toIng{
-            margin-left: 300px;
-        }
-        &--toSelf{ 
-            margin-left: 243px;
-            width: 360px;
-        }
-    }
-    &__ust{
-        &--toApp{
-            transform: translateX(380px);
-        }
-        &--toSelf{
-            transform: translateX(486px);
-            width: 400px
-        }
-    }
-}
 
 .ingredients{
     background-color: $blue;
     @include listContainer;
     &__list{
-        column-count: 7;
+        column-count: 4;
     }
 }
 
-.appareils{
+.appliances{
     background-color: $green;
     @include listContainer;
     &__list{
@@ -121,23 +105,58 @@
     }
 }
 
-#ingredients__iconBtn{
-    transition: transform .0.3s ease-in;
-    &:hover{
-        color: $grey;
+/* @keyframes toggleList {
+    from {
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
     }
 }
-
-#appareils__iconBtn{
-    transition: transform .0.3s ease-in;
-    &:hover{
-        color: $grey;
+.ustensiles__List{
+    animation-duration: 2s;
+    animation-name: toggleList;
+    .hidden{
+        opacity: 0;
     }
+    .show{
+        opacity: 1;
+    }
+} */
+
+
+.xSmallList{
+    column-count: 1;
+}
+.smallList{
+    column-count: 2;
+}
+
+#ingredients__iconBtn{
+    @include dropDownIcon
+}
+
+#appliances__iconBtn{
+    @include dropDownIcon
 }
 
 #ustensiles__iconBtn{
-    transition: transform .0.3s ease-in;
-    &:hover{
-        color: $grey;
+    @include dropDownIcon
+}
+
+@include mobile {
+    .filters-container{
+        flex-direction: column;
+        width: 100%;
+        height: fit-content;
+    }
+    .filter{
+        width: 100%;
+    }
+}
+
+@include tablet {
+    .ingredients__list{
+        column-count: 2;
     }
 }

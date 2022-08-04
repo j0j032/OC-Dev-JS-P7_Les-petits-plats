@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/0eb7ff3966.js" crossorigin="anonymous"></script>
   <title>Les petits plats</title>
   <link rel="icon" type="image/x-icon" href="src/assets/images/logo.png">
 
@@ -15,13 +16,13 @@
     <img src="src/assets/images/logo2.png">
   </header>
   <main class="container">
-    <nav class="navbar__container">
+    <section class="searchBar__container">
       <form>
-        <input class="navbar__searchbar" type="search" placeholder="Rechercher une recette"
+        <input class="searchBar__input" type="search" placeholder="Rechercher une recette"
           aria-label="Rechercher une recette">
-        <button class="navbar__btn" type="submit"><img src="src/assets/images/glass.svg"></button>
+        <button class="searchBar__btn" type="submit" disabled><img src="src/assets/images/glass.svg"></button>
       </form>
-    </nav>
+    </section>
 
     <section class="filters">
 
@@ -34,21 +35,21 @@
             <input id="ingredients__searchBar" class="filter-search ingredients__searchBar" type="text"
               placeholder="Ingrédients" disabled>
             </input>
-            <span id="ingredients__iconBtn"><i class="bi bi-chevron-down chevron-down"></i>
+            <span id="ingredients__iconBtn"><i class="fa-solid fa-chevron-down"></i>
             </span>
           </div>
           <div class="ingredients__list hidden"></div>
         </div>
 
-        <div class="filter appareils">
-          <div class="filter__btn filter__btn--appareil">
-            <input id="appareils__searchBar" class="filter-search appareils__searchBar" type="text"
+        <div class="filter appliances">
+          <div class="filter__btn filter__btn--appliance">
+            <input id="appliances__searchBar" class="filter-search appliances__searchBar" type="text"
               placeholder="Appareils" disabled>
             </input>
-            <span id="appareils__iconBtn"><i class="bi bi-chevron-down chevron-down"></i>
+            <span id="appliances__iconBtn"><i class="fa-solid fa-chevron-down"></i>
             </span>
           </div>
-          <div class="appareils__list hidden"></div>
+          <div class="appliances__list hidden"></div>
         </div>
 
         <div class="filter ustensiles">
@@ -56,7 +57,7 @@
             <input id="ustensiles__searchBar" class="filter-search ustensiles__searchBar" type="text"
               placeholder="Ustensiles" disabled>
             </input>
-            <span id="ustensiles__iconBtn"><i class="bi bi-chevron-down chevron-down"></i>
+            <span id="ustensiles__iconBtn"><i class="fa-solid fa-chevron-down"></i>
             </span>
           </div>
           <div class="ustensiles__list hidden"></div>
