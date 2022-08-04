@@ -36,12 +36,24 @@ const emptyDOM = el => {
 }
 
 /**
+ * @param {HTML Element} parent
+ * @param {HTML Element} classToAdd
+ * @param {HTML Element} classToRemove
+ */
+const toggleClass = (parent, classToAdd, classToRemove) => {
+  parent.classList.add(classToAdd)
+  parent.classList.remove(classToRemove)
+}
+
+/**
  * To display messages if no results found
- * @param {HTML Element} container - to display messsage
+ * @param {HTML Element} parent- to display messsage
  * @param {String} text - to write the message
  */
-const displayError = (container, text) => {
-  container.textContent = text
+const displayError = (parent, text) => {
+  const errorAttributes = [{ class: 'error' }]
+  emptyDOM(parent)
+  createElement('div', errorAttributes, parent, text)
 }
 
 // THE 3 FOLLOWING ARE TO TOGGLE DISPLAY FILTERLIST
@@ -92,5 +104,5 @@ const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) 
 }
 
 module.exports = {
-  createElement, emptyDOM, toggleList, displayError
+  createElement, emptyDOM, toggleClass, toggleList, displayError
 }

@@ -72,34 +72,15 @@
     padding-left: 1rem;
     padding-right: 1.9rem;
     padding-bottom: 1.9rem;
+    box-shadow: 0px 4px 17px -5px rgba(0,0,0,0.56);
 }
 
-.adapt{
-    &__app{
-        &--toIng{
-            margin-left: 300px;
-        }
-        &--toSelf{ 
-            margin-left: 243px;
-            width: 360px;
-        }
-    }
-    &__ust{
-        &--toApp{
-            transform: translateX(380px);
-        }
-        &--toSelf{
-            transform: translateX(486px);
-            width: 400px
-        }
-    }
-}
 
 .ingredients{
     background-color: $blue;
     @include listContainer;
     &__list{
-        column-count: 7;
+        column-count: 4;
     }
 }
 
@@ -117,6 +98,13 @@
     &__list{
         column-count: 2;
     }
+}
+
+.xSmallList{
+    column-count: 1;
+}
+.smallList{
+    column-count: 2;
 }
 
 #ingredients__iconBtn{

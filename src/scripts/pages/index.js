@@ -88,7 +88,7 @@ const tagSearch = (arr, value, categoryList, container, tagList, btnList, select
   filterModel.createFilterListDOM(arr, categoryList, container)
   tagEvent(tagList, btnList, selector, categoryTag)
   if (value.length >= 2 && arr.length === 0) {
-    container.textContent = 'Aucun filtre'
+    displayError(container, 'Aucun résultat')
   }
 }
 
