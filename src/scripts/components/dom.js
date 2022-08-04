@@ -1,3 +1,11 @@
+/**
+ * To create DOM new Element
+ * @param {HTMLElement} tag - tagName (h1,div,span...)
+ * @param {array} attributes - Set attributes in an array of object: key for attribute type / value for the value of attribute
+ * @param {HTMLElement} parent - To attach new element to parrent
+ * @param {*} text - To set value of text if needed (if text? enter tour text/ if div set to null or '')
+ * @returns new element
+ */
 const createElement = (tag, attributes = [], parent, text) => {
   const element = document.createElement(tag)
 
@@ -17,30 +25,51 @@ const createElement = (tag, attributes = [], parent, text) => {
   return element
 }
 
+/**
+ * Remove all first child from an element quoted in parameter
+ * @param {HTMLElement} el - target element html with all first child to remove
+ */
 const emptyDOM = el => {
   while (el.firstChild) {
     el.removeChild(el.firstChild)
   }
 }
 
-const noResult = (container, text) => {
-  container.textContent = text
+/**
+ * @param {HTML Element} parent
+ * @param {HTML Element} classToAdd
+ * @param {HTML Element} classToRemove
+ */
+const toggleClass = (parent, classToAdd, classToRemove) => {
+  parent.classList.add(classToAdd)
+  parent.classList.remove(classToRemove)
+}
+
+/**
+ * To display messages if no results found
+ * @param {HTML Element} parent- to display messsage
+ * @param {String} text - to write the message
+ */
+const displayError = (parent, text) => {
+  const errorAttributes = [{ class: 'error' }]
+  emptyDOM(parent)
+  createElement('div', errorAttributes, parent, text)
 }
 
 // THE 3 FOLLOWING ARE TO TOGGLE DISPLAY FILTERLIST
 /**
      * DISPLAY
-     * @param {HTML el} btn to toggle (icon)
-     * @param {HTML el} list container to display list
-     * @param {HTML el} container main container to set visibility
-     * @param {HTML el} placeHolder to set and allow user search input
-     * @param {string} textSearch to set placholder text when search is available
+     * @param {HTML Element} btn -  to toggle (icon)
+     * @param {HTML Element} list - container to display list
+     * @param {HTML Element} container - main container to set visibility
+     * @param {HTML Element} placeHolder - to set and allow user search input
+     * @param {string} textSearch - to set placholder text when search is available
      */
 const displayList = (btn, list, container, placeHolder, textSearch) => {
-  btn.style.transform = 'rotate(180deg)'
+  btn.style.transform = 'rotate(-180deg)'
   list.classList.add('show')
   list.classList.remove('hidden')
-  container.classList.add('absolute')
+  container.classList.add('display')
   placeHolder.classList.add('show')
   placeHolder.removeAttribute('disabled')
   placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
@@ -48,18 +77,18 @@ const displayList = (btn, list, container, placeHolder, textSearch) => {
 }
 /**
      * HIDE
-     * @param {HTML el} btn to toggle (icon)
-     * @param {HTML el} list container to display list
-     * @param {HTML el} container main container to set visibility
-     * @param {HTML el} placeHolder to set and allow user search input
-     * @param {string} textDefault to displayBack the btn text
+     * @param {HTML Element} btn - to toggle (icon)
+     * @param {HTML Element} list - container to display list
+     * @param {HTML Element} container - main container to set visibility
+     * @param {HTML Element} placeHolder - to set and allow user search input
+     * @param {string} textDefault - to displayBack the btn text
      */
 const hideList = (btn, list, container, placeHolder, textDefault) => {
   btn.style.transform = 'rotate(0deg)'
   list.classList.remove('show')
   list.classList.add('hidden')
   list.classList.remove('onSearch')
-  container.classList.remove('absolute')
+  container.classList.remove('display')
   placeHolder.classList.remove('show')
   placeHolder.setAttribute('disabled', '')
   placeHolder.setAttribute('placeholder', textDefault)
@@ -75,5 +104,5 @@ const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) 
 }
 
 module.exports = {
-  createElement, emptyDOM, toggleList, noResult
+  createElement, emptyDOM, toggleClass, toggleList, displayError
 }
