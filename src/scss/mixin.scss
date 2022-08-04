@@ -23,6 +23,7 @@
         width: 60%;
         background-color: transparent;
         border: none;
+        font-size: 1.1rem;
         &::placeholder{
             color: $white;
         }
@@ -30,11 +31,21 @@
             color: $white;
         }
         &.show{
-            margin-left: 10px;
+            color: $white;
+            width: max-content;
             &::placeholder{
-                color:rgba(250, 235, 215, 0.424)            
+                color:rgba(250, 235, 215, 0.424)           
             }
         }
+    }
+}
+
+@mixin dropDownIcon {
+    font-size: 1.2rem;
+    font-weight: 900;
+    transition: transform 0.3s ease-in;
+    &:hover{
+        color: $grey;
     }
 }
 

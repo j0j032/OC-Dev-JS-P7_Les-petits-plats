@@ -168,7 +168,7 @@ const init = () => {
         getAndDisplayIngredientsList()
         break
       case 'appliances__iconBtn':
-        toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appliance', 'appliances')
+        toggleList(domLinker.appliancesIconBtn, domLinker.appliancesList, domLinker.appliances, domLinker.appliancesSearchBar, 'appareil', 'Appareils')
         getAndDisplayAppliancesList()
         break
       case 'ustensiles__iconBtn':

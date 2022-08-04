@@ -66,7 +66,7 @@ const displayError = (parent, text) => {
      * @param {string} textSearch - to set placholder text when search is available
      */
 const displayList = (btn, list, container, placeHolder, textSearch) => {
-  btn.style.transform = 'rotate(180deg)'
+  btn.style.transform = 'rotate(-180deg)'
   list.classList.add('show')
   list.classList.remove('hidden')
   container.classList.add('display')

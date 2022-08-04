@@ -41,6 +41,11 @@
     gap: 20px;
 }
 
+/* .filter__btn.filter__btn--ingredient{
+    transition: width 2s ease-in-out;
+    transition: height 2s ease-in-out;
+} */
+
 .filter{
     width: fit-content;
     border-radius: 5px;
@@ -70,8 +75,8 @@
 .display{
     z-index: 3;
     padding-left: 1rem;
-    padding-right: 1.9rem;
-    padding-bottom: 1.9rem;
+    padding-right: 1.2rem;
+    padding-bottom: 1.2rem;
     box-shadow: 0px 4px 17px -5px rgba(0,0,0,0.56);
 }
 
@@ -100,6 +105,26 @@
     }
 }
 
+/* @keyframes toggleList {
+    from {
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+.ustensiles__List{
+    animation-duration: 2s;
+    animation-name: toggleList;
+    .hidden{
+        opacity: 0;
+    }
+    .show{
+        opacity: 1;
+    }
+} */
+
+
 .xSmallList{
     column-count: 1;
 }
@@ -108,24 +133,15 @@
 }
 
 #ingredients__iconBtn{
-    transition: transform .0.3s ease-in;
-    &:hover{
-        color: $grey;
-    }
+    @include dropDownIcon
 }
 
 #appliances__iconBtn{
-    transition: transform .0.3s ease-in;
-    &:hover{
-        color: $grey;
-    }
+    @include dropDownIcon
 }
 
 #ustensiles__iconBtn{
-    transition: transform .0.3s ease-in;
-    &:hover{
-        color: $grey;
-    }
+    @include dropDownIcon
 }
 
 @include mobile {
@@ -136,5 +152,11 @@
     }
     .filter{
         width: 100%;
+    }
+}
+
+@include tablet {
+    .ingredients__list{
+        column-count: 2;
     }
 }
