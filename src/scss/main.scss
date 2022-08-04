@@ -19,4 +19,7 @@ header{
 }
 main{
     padding: 0 4%;
+    @include mobile {
+        padding: 0;
+    }
 }

@@ -36,3 +36,31 @@
         }
     }
 }
+
+@mixin mobile{
+    $breakpoints:(mobile:773px);
+    @media screen and (max-width:map-get($breakpoints, mobile)) {
+        @content;
+    }
+}
+
+@mixin desktopS{
+    $breakpoints:(desktopS:1200px);
+    @media screen and (max-width:map-get($breakpoints, desktopS)) {
+        @content;
+    }
+}
+
+@mixin desktopM{
+    $breakpoints:(desktopM:1400px);
+    @media screen and (max-width:map-get($breakpoints, desktopM)) {
+        @content;
+    }
+}
+
+@mixin tablet{
+    $breakpoints:(tablet:992px);
+    @media screen and (max-width:map-get($breakpoints, tablet)) {
+        @content;
+    }
+}

@@ -1,5 +1,5 @@
 module.exports = {
-  searchBar: document.querySelector('.navbar__searchbar'),
+  searchBar: document.querySelector('.searchBar__input'),
   resultsContainer: document.querySelector('.cards-container'),
   filtersContainer: document.querySelector('.filters-container'),
 
