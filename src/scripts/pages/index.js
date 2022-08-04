@@ -74,18 +74,19 @@ const closeTagEvent = () => {
  * To search a tag when a list has been displayed
  * @param {Array} arr - Array of list item from filled from api
  * @param {String} value - Input value to search (from: component/search/isIncluded())
+ * @param {String} categoryList - To set the right class to the lists in terms of category
  * @param {HTML Element} container - To display the result (from: factories/filter/createFilterListDOM)
  * The 4th following are the parameters from tagEvent()
  * @param {Array} tagList
  * @param {Array} btnList
  * @param {HTML Element} selector
- * @param {HTML Element} category
+ * @param {HTML Element} categoryTag
  */
-const tagSearch = (arr, value, container, tagList, btnList, selector, category) => {
+const tagSearch = (arr, value, categoryList, container, tagList, btnList, selector, categoryTag) => {
   arr = arr.filter(item => isIncluded(item, value))
   emptyDOM(container)
-  filterModel.createFilterListDOM(arr, container)
-  tagEvent(tagList, btnList, selector, category)
+  filterModel.createFilterListDOM(arr, categoryList, container)
+  tagEvent(tagList, btnList, selector, categoryTag)
   if (value.length >= 2 && arr.length === 0) {
     container.textContent = 'Aucun filtre'
   }
@@ -109,7 +110,7 @@ const getAndDisplayIngredientsList = async () => {
   tagEvent(state.Tags.ingredients, tagIngBtnList, '.ingredients__list>ul>li', 'tag tag--ing')
 
   ingredientsSearchBar.addEventListener('input', () => {
-    tagSearch(ingredients, ingredientsSearchBar.value, domLinker.ingredientsList, state.Tags.ingredients, tagIngBtnList, '.ingredients__list>ul>li', 'tag tag--ing')
+    tagSearch(ingredients, ingredientsSearchBar.value, 'ingredients', domLinker.ingredientsList, state.Tags.ingredients, tagIngBtnList, '.ingredients__list>ul>li', 'tag tag--ing')
   })
 }
 
@@ -124,7 +125,7 @@ const getAndDisplayAppliancesList = async () => {
   tagEvent(state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
 
   appliancesSearchBar.addEventListener('input', () => {
-    tagSearch(appliances, appliancesSearchBar.value, domLinker.appliancesList, state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
+    tagSearch(appliances, appliancesSearchBar.value, 'appliances', domLinker.appliancesList, state.Tags.appliances, tagAppBtnList, '.appliances__list>ul>li', 'tag tag--app')
   })
 }
 
@@ -139,7 +140,7 @@ const getAndDisplayUstensilsList = async () => {
   tagEvent(state.Tags.ustensils, tagUstBtnList, '.ustensiles__list>ul>li', 'tag tag--ust')
 
   ustensilesSearchBar.addEventListener('input', () => {
-    tagSearch(ustensiles, ustensilesSearchBar.value, domLinker.ustensilesList, state.Tags.ustensils, tagUstBtnList, '.ustensiles__list>ul>li', 'tag tag--ust')
+    tagSearch(ustensiles, ustensilesSearchBar.value, 'ustensils', domLinker.ustensilesList, state.Tags.ustensils, tagUstBtnList, '.ustensiles__list>ul>li', 'tag tag--ust')
   })
 }
 
