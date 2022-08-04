@@ -8,10 +8,22 @@ module.exports = {
     /**
      * To create a list of tags in terms of category
      * @param {Array} arr - Array of category (ingredients, apliances, ustensils)
+     * @param {String} category - String to set the right class in terms of category
      * @param {HTMLElement} parent - container to display the list
      */
-    const createFilterListDOM = (arr, parent) => {
-      const listAttributes = [{ class: 'list' }]
+    const createFilterListDOM = (arr, category = '', parent) => {
+      let listAttributes
+      switch (category) {
+        case 'ingredients':
+          listAttributes = [{ class: 'list list--ing' }]
+          break
+        case 'appliances':
+          listAttributes = [{ class: 'list list--app' }]
+          break
+        case 'ustensils':
+          listAttributes = [{ class: 'list list--ust' }]
+          break
+      }
       const list = createElement('ul', listAttributes, parent, null)
       arr.forEach(el => {
         createElement('li', listAttributes, list, el)

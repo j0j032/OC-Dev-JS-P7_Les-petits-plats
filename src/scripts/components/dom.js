@@ -1,5 +1,3 @@
-const domLinker = require('./domLinker')
-
 /**
  * To create DOM new Element
  * @param {HTMLElement} tag - tagName (h1,div,span...)
@@ -59,8 +57,7 @@ const displayList = (btn, list, container, placeHolder, textSearch) => {
   btn.style.transform = 'rotate(180deg)'
   list.classList.add('show')
   list.classList.remove('hidden')
-  container.classList.add('absolute')
-  domLinker.resultsContainer.classList.add('absolute')
+  container.classList.add('display')
   placeHolder.classList.add('show')
   placeHolder.removeAttribute('disabled')
   placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
@@ -79,7 +76,7 @@ const hideList = (btn, list, container, placeHolder, textDefault) => {
   list.classList.remove('show')
   list.classList.add('hidden')
   list.classList.remove('onSearch')
-  container.classList.remove('absolute')
+  container.classList.remove('display')
   placeHolder.classList.remove('show')
   placeHolder.setAttribute('disabled', '')
   placeHolder.setAttribute('placeholder', textDefault)

@@ -39,7 +39,6 @@
     display: flex;
     justify-content: space-between;
     gap: 20px;
-    position: relative;
 }
 
 .filter{
@@ -68,8 +67,7 @@
 .hidden{
     display: none;
 }
-.absolute{
-    // position:fixed;
+.display{
     z-index: 3;
     padding-left: 1rem;
     padding-right: 1.9rem;
