@@ -1,7 +1,7 @@
 const api = require('../components/api')
 const state = require('../components/state')
 const domLinker = require('../components/domLinker')
-const { emptyDOM, toggleList, displayError } = require('../components/dom')
+const { emptyDOM, toggleList, displayError, playAnimation } = require('../components/dom')
 const { isIncluded } = require('../components/search')
 const { createRecipeCard } = require('../factories/recipe')
 const { createFilters } = require('../factories/filter')
@@ -38,10 +38,20 @@ const tagEvent = (tagList, tagBtnList, selector, category) => {
   tagBtnList = document.querySelectorAll(selector)
   tagBtnList.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      tagList.push(e.target.outerText)
-      filterModel.createTag(e.target.outerText, category)
-      applySearchBarFilter()
-      closeTagEvent()
+      const item = e.target.outerText
+      if (!tagList.find(el => el === item)) {
+        filterModel.createTag(item, category)
+        tagList.push(item)
+        applySearchBarFilter()
+        closeTagEvent()
+      } else {
+        const tags = document.querySelectorAll('.tag')
+        for (let i = 0; i < tags.length; i++) {
+          if (item === tags[i].outerText) {
+            playAnimation(tags[i], 'tagExist')
+          }
+        }
+      }
 
       // to close container when user select a tag
       const container = e.target.classList[1]

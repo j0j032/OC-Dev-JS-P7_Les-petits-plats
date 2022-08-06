@@ -3,6 +3,10 @@ node_modules
 
 .DS_Store
 
+# vscode
+.vscode
+.vscode/settings.json
+
 # package lock
 package-lock.json
 

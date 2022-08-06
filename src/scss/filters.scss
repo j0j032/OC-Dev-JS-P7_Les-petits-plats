@@ -33,6 +33,7 @@
     }
 }
 
+
 .filters-container{
     width: fit-content;
     height: 80px;
@@ -41,10 +42,6 @@
     gap: 20px;
 }
 
-/* .filter__btn.filter__btn--ingredient{
-    transition: width 2s ease-in-out;
-    transition: height 2s ease-in-out;
-} */
 
 .filter{
     width: fit-content;
@@ -104,26 +101,6 @@
         column-count: 2;
     }
 }
-
-/* @keyframes toggleList {
-    from {
-        opacity: 0;
-    }
-    to{
-        opacity: 1;
-    }
-}
-.ustensiles__List{
-    animation-duration: 2s;
-    animation-name: toggleList;
-    .hidden{
-        opacity: 0;
-    }
-    .show{
-        opacity: 1;
-    }
-} */
-
 
 .xSmallList{
     column-count: 1;

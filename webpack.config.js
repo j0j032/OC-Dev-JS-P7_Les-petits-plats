@@ -36,7 +36,7 @@ const config = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new HtmlWebpackPlugin(sharedHtmlWebpackConf('index', 'Fisheye')),
+    new HtmlWebpackPlugin(sharedHtmlWebpackConf('index', 'dev-js-p7')),
     // Define global variable from NODE_ENV for the app
     new webpack.DefinePlugin({
       DEBUG: process.env.NODE_ENV === 'development',
