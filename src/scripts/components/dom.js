@@ -36,6 +36,7 @@ const emptyDOM = el => {
 }
 
 /**
+ * To toggle easily between 2 classes
  * @param {HTML Element} parent
  * @param {HTML Element} classToAdd
  * @param {HTML Element} classToRemove
@@ -56,50 +57,34 @@ const displayError = (parent, text) => {
   createElement('div', errorAttributes, parent, text)
 }
 
-// THE 3 FOLLOWING ARE TO TOGGLE DISPLAY FILTERLIST
 /**
-     * DISPLAY
+     *To open and set the container the when user click on filters btns
      * @param {HTML Element} btn -  to toggle (icon)
      * @param {HTML Element} list - container to display list
      * @param {HTML Element} container - main container to set visibility
      * @param {HTML Element} placeHolder - to set and allow user search input
      * @param {string} textSearch - to set placholder text when search is available
      */
-const displayList = (btn, list, container, placeHolder, textSearch) => {
-  btn.style.transform = 'rotate(-180deg)'
-  list.classList.add('show')
-  list.classList.remove('hidden')
-  container.classList.add('display')
-  placeHolder.classList.add('show')
-  placeHolder.removeAttribute('disabled')
-  placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
-  placeHolder.focus()
-}
-/**
-     * HIDE
-     * @param {HTML Element} btn - to toggle (icon)
-     * @param {HTML Element} list - container to display list
-     * @param {HTML Element} container - main container to set visibility
-     * @param {HTML Element} placeHolder - to set and allow user search input
-     * @param {string} textDefault - to displayBack the btn text
-     */
-const hideList = (btn, list, container, placeHolder, textDefault) => {
-  btn.style.transform = 'rotate(0deg)'
-  list.classList.remove('show')
-  list.classList.add('hidden')
-  list.classList.remove('onSearch')
-  container.classList.remove('display')
-  placeHolder.classList.remove('show')
-  placeHolder.setAttribute('disabled', '')
-  placeHolder.setAttribute('placeholder', textDefault)
-  placeHolder.value = ''
-}
-// SAME PARAM AS DISPLAY AND HIDE
 const toggleList = (btn, list, container, placeHolder, textSearch, textDefault) => {
   if (list.classList.contains('hidden')) {
-    displayList(btn, list, container, placeHolder, textSearch)
+    btn.style.transform = 'rotate(-180deg)'
+    list.classList.toggle('show')
+    list.classList.toggle('hidden')
+    container.classList.toggle('display')
+    placeHolder.classList.toggle('show')
+    placeHolder.removeAttribute('disabled')
+    placeHolder.setAttribute('placeholder', `Rechercher un ${textSearch}`)
+    placeHolder.focus()
   } else {
-    hideList(btn, list, container, placeHolder, textDefault)
+    btn.style.transform = 'rotate(0deg)'
+    list.classList.toggle('show')
+    list.classList.toggle('hidden')
+    container.classList.toggle('display')
+    placeHolder.classList.toggle('show')
+    list.classList.remove('onSearch')
+    placeHolder.setAttribute('disabled', '')
+    placeHolder.setAttribute('placeholder', textDefault)
+    placeHolder.value = ''
   }
 }
 
