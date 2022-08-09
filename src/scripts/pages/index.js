@@ -76,6 +76,9 @@ const closeTagEvent = () => {
     el.addEventListener('click', (e) => {
       filterModel.removeTag(e)
       applySearchBarFilter()
+      getAndDisplayAppliancesList()
+      getAndDisplayIngredientsList()
+      getAndDisplayUstensilsList()
     })
   })
 }
